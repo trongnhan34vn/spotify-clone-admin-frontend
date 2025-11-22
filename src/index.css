@@ -1,0 +1,188 @@
+@import "tailwindcss";
+/* Gotham Thin */
+@font-face {
+  font-family: 'Gotham';
+  src: url('/fonts/Gotham-Thin.otf') format('opentype'),
+       url('/fonts/GothamLight.ttf') format('truetype');
+  font-weight: 100;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Gotham';
+  src: url('/fonts/Gotham-ThinItalic.otf') format('opentype');
+  font-weight: 100;
+  font-style: italic;
+}
+
+/* Gotham ExtraLight */
+@font-face {
+  font-family: 'Gotham';
+  src: url('/fonts/Gotham-XLight.otf') format('opentype'),
+       url('/fonts/GothamLight.ttf') format('truetype');
+  font-weight: 200;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Gotham';
+  src: url('/fonts/Gotham-XLightItalic.otf') format('opentype');
+  font-weight: 200;
+  font-style: italic;
+}
+
+/* Gotham Light */
+@font-face {
+  font-family: 'Gotham';
+  src: url('/fonts/Gotham-Light.otf') format('opentype'),
+       url('/fonts/GothamLight.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Gotham';
+  src: url('/fonts/GothamLightItalic.ttf') format('truetype');
+  font-weight: 300;
+  font-style: italic;
+}
+
+/* Gotham Book */
+@font-face {
+  font-family: 'Gotham';
+  src: url('/fonts/GothamBook.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Gotham';
+  src: url('/fonts/GothamBookItalic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+}
+
+/* Gotham Medium */
+@font-face {
+  font-family: 'Gotham';
+  src: url('/fonts/GothamMedium.ttf') format('truetype'),
+       url('/fonts/GothamMedium_1.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Gotham';
+  src: url('/fonts/GothamMediumItalic.ttf') format('truetype');
+  font-weight: 500;
+  font-style: italic;
+}
+
+/* Gotham Bold */
+@font-face {
+  font-family: 'Gotham';
+  src: url('/fonts/Gotham-Bold.otf') format('opentype'),
+       url('/fonts/GothamBold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Gotham';
+  src: url('/fonts/GothamBoldItalic.ttf') format('truetype');
+  font-weight: 700;
+  font-style: italic;
+}
+
+/* Gotham Black */
+@font-face {
+  font-family: 'Gotham';
+  src: url('/fonts/Gotham-Black.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
+}
+
+/* Gotham Ultra Italic */
+@font-face {
+  font-family: 'Gotham';
+  src: url('/fonts/Gotham-UltraItalic.otf') format('opentype');
+  font-weight: 900;
+  font-style: italic;
+}
+
+
+
+/* body {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+} */
+
+:root {
+  font-family: 'Gotham', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #fff;
+  --color-primary: #1DB954; /* Spotify green */
+  --color-secondary: #191414; /* Spotify black */
+  --color-bg-card: #121212;
+  --color-border: #7c7c7c;
+  --color-secondary-background: #121212;
+  --color-accent: #ffffff;
+  --color-muted: #b3b3b3;
+}
+
+.default-transition {
+  transition: all 0.2s ease-in;
+}
+
+/* a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+} */
+
+@media (prefers-color-scheme: light) {
+  :root {
+    /* color: #213547; */
+    background-color: #ffffff;
+  }
+  a:hover {
+    /* color: #747bff; */
+  }
+  button {
+    /* background-color: #f9f9f9; */
+  }
+}

@@ -1,0 +1,7 @@
+<!-- save as unauthorized-padlock-circle-white.svg -->
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 24 24" fill="none">
+  <rect width="24" height="24" fill="transparent"></rect>
+  <circle cx="12" cy="12" r="10" fill="transparent" stroke="#1DB954" stroke-width="1.5"></circle>
+  <rect x="8.2" y="11.2" width="7.6" height="5.6" rx="0.9" fill="#1DB954"></rect>
+  <path d="M9.8 11.2v-1.1a2.2 2.2 0 0 1 4.4 0v1.1" stroke="#1DB954" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
