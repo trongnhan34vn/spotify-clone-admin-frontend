@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Form from '../../components/Form';
 import TextField from '../../components/TextField';
 import Button from '../../components/Button';
-import Logo from '../../constants/Logo';
+import Logo from '../../components/Logo';
 import { PASSWORD_REGEX } from '../../constants/regex.constant';
 import { useDispatch, useSelector } from 'react-redux';
 import { type AppDispatch } from '../../redux/store';
@@ -60,7 +60,7 @@ const ResetPassword = () => {
   return (
     <Form
       className="w-1/4 mx-auto pt-40"
-      defaultValue={defaultValue}
+      defaultValues={defaultValue}
       onSubmit={handleSubmit}
     >
       <div className="flex items-center gap-4 mb-10">

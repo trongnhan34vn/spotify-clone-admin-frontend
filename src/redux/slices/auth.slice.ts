@@ -1,40 +1,81 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { ReduxState } from '../../types/redux.type';
-import type { Token } from '../../types/entities/Auth.type';
-import { signInThunk } from '../../thunks/auth.thunk';
+import type { Token } from '../../types/entities/auth.type';
+import {
+  changePasswordThunk,
+  signInThunk,
+  signOutThunk,
+} from '../../thunks/auth.thunk';
 
-const initState: ReduxState<Token> = {
-  data: null,
-  loading: false,
-  message: null,
-  error: null,
+type ActionState = {
+  signIn: ReduxState<Token>;
+  changePassword: ReduxState<string>;
+  signOut: ReduxState<string>;
+};
+
+const defaultState = { data: null, error: null, loading: false };
+
+const initState: ActionState = {
+  signIn: defaultState,
+  changePassword: defaultState,
+  signOut: defaultState,
 };
 
 const authSlice = createSlice({
   name: 'auth',
   initialState: initState,
   reducers: {
-    reset: () => {
-      return initState;
+    reset: state => {
+      state.signIn = defaultState;
     },
+
+    resetChangePassword: state => {
+      state.changePassword = defaultState;
+    },
+
+    resetSignOut: state => {
+      state.signOut = defaultState;
+    }
   },
   extraReducers: builder => {
     builder
       .addCase(signInThunk.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as any;
+        state.signIn.loading = false;
+        state.signIn.error = action.payload as any;
       })
       .addCase(signInThunk.fulfilled, (state, action) => {
-        const { data, message } = action.payload as any;
-        state.data = data;
-        state.loading = false;
-        state.message = message;
+        state.signIn.data = action.payload;
+        state.signIn.loading = false;
       })
       .addCase(signInThunk.pending, state => {
-        state.loading = true;
+        state.signIn.loading = true;
+      })
+
+      .addCase(changePasswordThunk.rejected, (state, action) => {
+        state.changePassword.loading = false;
+        state.changePassword.error = action.payload as string;
+      })
+      .addCase(changePasswordThunk.fulfilled, (state, action) => {
+        state.changePassword.data = action.payload;
+        state.changePassword.loading = false;
+      })
+      .addCase(changePasswordThunk.pending, state => {
+        state.changePassword.loading = true;
+      })
+
+      .addCase(signOutThunk.rejected, (state, action) => {
+        state.signOut.error = action.payload as string;
+        state.signOut.loading = false;
+      })
+      .addCase(signOutThunk.fulfilled, (state, action) => {
+        state.signOut.data = action.payload;
+        state.signOut.loading = false;
+      })
+      .addCase(signOutThunk.pending, state => {
+        state.signOut.loading = true;
       });
   },
 });
 
 export default authSlice.reducer;
-export const { reset } = authSlice.actions;
+export const { reset, resetChangePassword, resetSignOut } = authSlice.actions;

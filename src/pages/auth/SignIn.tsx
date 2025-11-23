@@ -1,4 +1,5 @@
-import Logo from '../../constants/Logo';
+import Logo from '../../components/Logo';
+import Spinner from '../../components/Spinner';
 import SignInForm from '../../forms/SignInForm';
 
 const SignIn = () => {
@@ -11,6 +12,7 @@ const SignIn = () => {
         </div>
         {/* Form */}
         <SignInForm />
+        <Spinner />
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 import { FaTrash } from 'react-icons/fa6';
-import Button from '../components/Button';
-import Form from '../components/Form';
-import TextField from '../components/TextField';
+import Button from '../../../components/Button';
+import Form from '../../../components/Form';
+import TextField from '../../../components/TextField';
 
 type IProps = {
   defaultValue: any;

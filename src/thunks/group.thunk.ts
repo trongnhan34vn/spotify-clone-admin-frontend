@@ -8,12 +8,7 @@ export const listAdminGroupsThunk = createAsyncThunk(
   'groups/listAdminGroups',
   async (_, { rejectWithValue }) => {
     try {
-      const res = await listAdminGroupsService();
-      const resState: ReduxState<Group> = {
-        data: res,
-      };
-
-      return resState;
+      return await listAdminGroupsService();
     } catch (err: any) {
       console.error('[Thunk] Error occurred when listing admin groups', err.message);
       if (err instanceof AxiosError) {

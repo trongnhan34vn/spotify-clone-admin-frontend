@@ -1,28 +1,43 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import type { ReduxState, ThunkRequest, ThunkResponse } from '../types/redux.type';
+import { handleException } from '../helpers/handle.exception';
+import { changePasswordService, signInService, signOutService } from '../services/auth.service';
 import type { UserSignIn } from '../types/entities/user.type';
-import { signInService } from '../services/auth.service';
-import type { Token } from '../types/entities/Auth.type';
+import type { ThunkRequest } from '../types/redux.type';
 
 export const signInThunk = createAsyncThunk(
   'auth/signIn',
   async (req: ThunkRequest<UserSignIn>, { rejectWithValue }) => {
     try {
       const { data } = req;
-      const res: ThunkResponse<Token> = await signInService(data);
-      const resData = res.data;
-      const code = res.code;
-
-      const resState: ReduxState<Token> = {
-        data: resData!,
-        message: 'Sign In Successfully' // gen từ code i18n
-      }
-
-      return resState;
-
+      return await signInService(data);
+  
     } catch (err: any) {
       console.error('[Thunk] Error occurred when signing in', err);
-      return rejectWithValue(err.response?.data?.code);
+      return handleException(err, rejectWithValue);
     }
   }
 );
+
+export const changePasswordThunk = createAsyncThunk(
+  'auth/changePassword',
+  async (req: ThunkRequest<any>, {rejectWithValue}) => {
+    try {
+      return await changePasswordService(req);
+    } catch (error) {
+      console.error('[Thunk] Error occurred when changing password', error);
+      return handleException(error, rejectWithValue);
+    }
+  }
+)
+
+export const signOutThunk =  createAsyncThunk(
+  'auth/signOut',
+  async (req: string, {rejectWithValue}) => {
+    try {
+      return await signOutService(req);
+    } catch (error) {
+      console.error('[Thunk] Error occurred when changing password', error);
+      return handleException(error, rejectWithValue);
+    }
+  }
+)

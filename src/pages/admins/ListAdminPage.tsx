@@ -226,7 +226,7 @@ const AdminPage = () => {
     dispatch(listAdminGroupsThunk());
   }, []);
 
-  const listAdminGroupRes = useSelector(groupSelector);
+  const listAdminGroupRes = useSelector(groupSelector).list;
 
   useEffect(() => {
     if (!listAdminGroupRes.data) return;
@@ -238,6 +238,8 @@ const AdminPage = () => {
 
   // ====== CREATE ====== //
   const handleCreateAdmin = useCallback(() => {
+    console.log("A");
+    
     navigate(getRoutePathByName(RouteName.CREATE_ADMIN));
   }, []);
   // ====== CREATE ====== //
@@ -363,7 +365,7 @@ const AdminPage = () => {
         selectedFilter={query.filter}
       />
       <Spinner />
-
+      
       <DetailAdminModal
         open={plugDetailAdmin.isOpen}
         close={plugDetailAdmin.close}

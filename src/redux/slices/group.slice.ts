@@ -3,12 +3,21 @@ import type { ReduxState } from '../../types/redux.type';
 import type { Group } from '../../types/entities/user.type';
 import { listAdminGroupsThunk } from '../../thunks/group.thunk';
 
-const initialState: ReduxState<Group> = {
+type ActionState = {
+  list: ReduxState<Group[]>;
+};
+
+const defaultState = {
   data: null,
   error: null,
-  message: null,
   loading: false,
 };
+
+
+const initialState: ActionState = {
+  list: defaultState,
+};
+
 
 const groupSlice = createSlice({
   name: 'group',
@@ -20,19 +29,17 @@ const groupSlice = createSlice({
   },
   extraReducers: builder => {
     builder.addCase(listAdminGroupsThunk.fulfilled, (state, action) => {
-      const { data } = action.payload as ReduxState<Group>;
-      state.data = data;
-      state.loading = false;
+      state.list.data = action.payload;
+      state.list.loading = false;
     });
 
     builder.addCase(listAdminGroupsThunk.rejected, (state, action) => {
-      const { error } = action.payload as ReduxState<Group>;
-      state.error = error;
-      state.loading = false;
+      state.list.error = action.payload as string;
+      state.list.loading = false;
     });
 
     builder.addCase(listAdminGroupsThunk.pending, state => {
-      state.loading = true;
+      state.list.loading = true;
     });
   },
 });

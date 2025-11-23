@@ -1,11 +1,10 @@
-import { useState } from 'react';
 import './App.css';
-import SignIn from './pages/auth/SignIn';
+import AppRoutes from './routes/AppRoutes';
 
 function App() {
   return (
     <div className="min-h-screen w-full bg-black">
-      <SignIn />
+      <AppRoutes />
     </div>
   );
 }

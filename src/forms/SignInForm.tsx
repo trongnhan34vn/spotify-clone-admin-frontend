@@ -6,11 +6,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch } from '../redux/store';
 import { signInThunk } from '../thunks/auth.thunk';
 import type { ThunkRequest } from '../types/redux.type';
-import { authSelector } from '../redux/selector/auth.selector';
 import { useEffect } from 'react';
 import type { UserSignIn } from '../types/entities/user.type';
+import { authSelector } from '../redux/selector/selector';
+import { spinner } from '../components/Spinner';
+import { useNavigate } from 'react-router-dom';
+import { getRoutePathByName } from '../routes/routes';
+import { RouteName } from '../routes/route.name.enum';
+import toast from 'react-hot-toast';
+import { reset } from '../redux/slices/auth.slice';
 
 const SignInForm = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const defaultValue: UserSignIn = {
     username: '',
@@ -21,25 +28,42 @@ const SignInForm = () => {
     const req: ThunkRequest<UserSignIn> = {
       data,
     };
+    spinner.show();
     dispatch(signInThunk(req));
   };
 
-  const authResSelector = useSelector(authSelector);
-  const { data, message, error, loading } = authResSelector;
+  const authRes = useSelector(authSelector).signIn;
+  const { data, error, loading } = authRes;
 
   useEffect(() => {
-    if (error) {
-      console.log('lỗi r');
+    // handle response sign in
+    if (loading) {
+      spinner.show();
+    } else {
+      spinner.hide();
+    }
+
+    if (data) {
+      toast.success('Sign In Success');
+      if (data.hasResetPassword) {
+        navigate(getRoutePathByName(RouteName.RESET_PASSWORD));
+      } else {
+        navigate(getRoutePathByName(RouteName.DASHBOARD));
+      }
+      dispatch(reset());
       return;
     }
 
-    console.log('data: ', data);
-    console.log('message: ', message);
-    return;
-  }, [authResSelector]);
+    if (error) {
+      spinner.hide();
+      toast.error(error);
+      dispatch(reset());
+      return;
+    }
+  }, [authRes]);
 
   return (
-    <Form defaultValue={defaultValue} onSubmit={onSubmit}>
+    <Form defaultValues={defaultValue} onSubmit={onSubmit}>
       <Field
         id="username"
         required

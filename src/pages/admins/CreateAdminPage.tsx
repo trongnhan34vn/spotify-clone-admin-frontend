@@ -42,7 +42,7 @@ const CreateAdminPage = () => {
     dispatch(listAdminGroupsThunk());
   }, []);
 
-  const listAdminGroupRes = useSelector(groupSelector);
+  const listAdminGroupRes = useSelector(groupSelector).list;
 
   useEffect(() => {
     if (!listAdminGroupRes.data) return;

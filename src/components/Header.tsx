@@ -3,7 +3,7 @@ import toast from 'react-hot-toast';
 import { IoNotificationsOutline } from 'react-icons/io5';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import Logo from '../constants/Logo';
+import Logo from './Logo';
 import { authSelector } from '../redux/selector/selector';
 import { resetSignOut } from '../redux/slices/auth.slice';
 import type { AppDispatch } from '../redux/store';
@@ -21,7 +21,7 @@ const Header = () => {
 
   const signOut = () => {
     navigate(getRoutePathByName(RouteName.SIGN_IN));
-    dispatch(signOutThunk(username!));
+    if (username) dispatch(signOutThunk(username));
     localStorage.removeItem('username');
     // setTimeout(() => , 100);
   };

@@ -69,7 +69,7 @@ const SideModal = ({
             >
               <DialogPanel
                 transition
-                className={`relative h-full ${getSize(size)} w-full bg-[var(--color-third)] backdrop-blur-2xl duration-300 ease-out data-closed:opacity-0`}
+                className={`relative h-full ${getSize(size)} w-full bg-[var(--color-bg-card)] duration-300 ease-out data-closed:opacity-0`}
               >
                 <DialogTitle
                   as="h3"

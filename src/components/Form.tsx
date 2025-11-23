@@ -4,15 +4,25 @@ import { FormProvider, useForm } from 'react-hook-form';
 export type FormProviderProps = {
   onSubmit: (data: any) => void;
   children: ReactNode;
-  defaultValue: any;
+  defaultValues: any;
+  className?: string;
+  ref?: any
 };
 
-const Form = ({ onSubmit, children, defaultValue }: FormProviderProps) => {
-  const methods = useForm({ defaultValues: defaultValue });
+const Form = ({
+  onSubmit,
+  children,
+  defaultValues,
+  className,
+  ref
+}: FormProviderProps) => {
+  const methods = useForm({ defaultValues: defaultValues });
   return (
-    <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)}>{children}</form>
-    </FormProvider>
+    <div className={`${className}`}>
+      <FormProvider  {...methods}>
+        <form ref={ref} onSubmit={methods.handleSubmit(onSubmit)}>{children}</form>
+      </FormProvider>
+    </div>
   );
 };
 

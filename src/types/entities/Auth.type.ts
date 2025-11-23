@@ -6,5 +6,5 @@ export type Token = {
   username: string;
   hasResetPassword: boolean;
   tokenType: string;
-
+  
 }

@@ -1,16 +1,16 @@
 import { IoIosCheckmarkCircleOutline } from 'react-icons/io';
-import Button from '../components/Button';
-import Form from '../components/Form';
-import SelectField from '../components/SelectField';
-import TextField from '../components/TextField';
+import Button from '../../../components/Button';
+import Form from '../../../components/Form';
+import SelectField from '../../../components/SelectField';
+import TextField from '../../../components/TextField';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { AiOutlineStop } from 'react-icons/ai';
 import { FaEdit } from 'react-icons/fa';
 import { MdEdit } from 'react-icons/md';
-import SwitchField from '../components/SwitchField';
-import type { Group, User } from '../types/entities/User.type';
-import { capitalizeFirst } from '../types/utils/string.format';
+import SwitchField from '../../../components/SwitchField';
+import type { Group, User } from '../../../types/entities/user.type';
+import { capitalizeFirst } from '../../../types/utils/string.format';
 
 type IProps = {
   defaultValue: User;

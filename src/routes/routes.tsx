@@ -1,6 +1,7 @@
+import { lazy } from 'react';
 import CreateAdminPage from '../pages/admins/CreateAdminPage';
 import { default as AdminPage } from '../pages/admins/ListAdminPage';
-import SignIn from '../pages/auth/SignIn';
+const SignIn = lazy(() => import('../pages/auth/SignIn'));
 import Dashboard from '../pages/dashboard/Dashboard';
 import GenrePage from '../pages/genres/GenrePage';
 import NotFound from '../pages/not-found/NotFound';
@@ -75,7 +76,7 @@ export const getRoutePathByName = (name: string) => {
   const route = getRouteByName(name);
   if (!route) {
     console.error('Route Not Found');
-    return getRouteByName(RouteName.NOT_FOUND)!.path;
+    return getRouteByName(RouteName.NOT_FOUND)?.path ?? "";
   }
   return route.path;
 };

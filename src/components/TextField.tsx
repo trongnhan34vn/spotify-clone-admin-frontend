@@ -36,17 +36,25 @@ const TextField = ({
         control={control}
         name={name}
         rules={{
-          ...(required ? { required: `${capitalizeFirst(name)} is required.` } : {}),
+          ...(required
+            ? { required: `${capitalizeFirst(name)} is required.` }
+            : {}),
           ...(pattern
             ? {
-                pattern: { value: pattern, message: `${capitalizeFirst(name)} is invalid.` },
+                pattern: {
+                  value: pattern,
+                  message: `${capitalizeFirst(name)} is invalid.`,
+                },
               }
             : {}),
           ...(validateValue
             ? {
                 validate: (value: string) => {
                   if (value !== validateValue) {
-                    return validateMessage || `${capitalizeFirst(name)} does not match`;
+                    return (
+                      validateMessage ||
+                      `${capitalizeFirst(name)} does not match`
+                    );
                   }
                   return true;
                 },
@@ -56,14 +64,14 @@ const TextField = ({
         render={({ field: { onChange, value }, fieldState: { error } }) => (
           <div>
             <Input
-            hidden={hidden}
+              hidden={hidden}
               disabled={disabled}
               defaultValue={
                 defaultValue !== undefined && defaultValue !== null
                   ? defaultValue
                   : name !== 'id'
                     ? value
-                    : `${EntityCode.ADMIN}${value?.slice(0, 6).toUpperCase() ?? ""}`
+                    : `${EntityCode.ADMIN}${value?.slice(0, 6).toUpperCase() ?? ''}`
               }
               // defaultValue={value}
               className={`${error ? 'border-red-500' : ''} ${childClassName} ${disabled ? ' cursor-not-allowed' : ''}`}

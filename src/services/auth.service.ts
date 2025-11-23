@@ -1,13 +1,15 @@
-import { createHttpClient } from '.';
+import { http } from '.';
 import type { UserSignIn } from '../types/entities/user.type';
 
 export const signInService = async (user: UserSignIn) => {
-  try {
-    const client = createHttpClient();
-    const res = await client.post('/api/v1/auth/sign-in', user);
-    return res.data;
-  } catch (error) {
-    console.log('[Service] Error occurred when signing in', error);
-    throw error;
-  }
+  const res = await http().post('/api/v1/auth/sign-in', user);
+  return res.data;
 };
+
+export const changePasswordService = async (data: any) => {
+  return (await http().post('/api/v1/auth/password', data)).data;
+};
+
+export const signOutService = async (data: any) => {
+  return await http().post('/api/v1/auth/sign-out', data);
+} 

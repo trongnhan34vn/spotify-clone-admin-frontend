@@ -1,8 +1,8 @@
-import { instance } from ".";
+import { http } from ".";
 
 export const listAdminGroupsService = async () => {
   try {
-    const response = await instance(). get(
+    const response = await http(). get(
       `/api/v1/users/admin/groups/list`
     )
     return response.data;

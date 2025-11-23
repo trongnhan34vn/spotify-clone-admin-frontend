@@ -3,5 +3,9 @@ export type InputProps = {
   type?: string;
   id: string;
   placeholder?: string;
-  onChange?: () => void;
+  onChange?: (e: any) => void;
+  disabled?: boolean
+  hidden?: boolean
+  defaultValue?: string;
+  value?: string
 };
