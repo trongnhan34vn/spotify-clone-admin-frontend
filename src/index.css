@@ -122,11 +122,13 @@
   color: #fff;
   --color-primary: #1DB954; /* Spotify green */
   --color-secondary: #191414; /* Spotify black */
+  --color-third: #1f1f1f;
   --color-bg-card: #121212;
   --color-border: #7c7c7c;
   --color-secondary-background: #121212;
   --color-accent: #ffffff;
   --color-muted: #b3b3b3;
+  --color-secondary-background-hover: #202020;
 }
 
 .default-transition {
@@ -185,4 +187,11 @@ button:focus-visible {
   button {
     /* background-color: #f9f9f9; */
   }
+}
+
+/* Spotify-like minimal scrollbar */
+
+/* Webkit browsers (Chrome, Edge, Safari, new Opera) */
+*::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
 }
