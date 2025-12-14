@@ -3,29 +3,120 @@ import Form from '../../../components/Form';
 import SelectField from '../../../components/SelectField';
 import TextField from '../../../components/TextField';
 
+import { useCallback, useEffect, useMemo } from 'react';
+import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import { spinner } from '../../../components/Spinner';
 import { EMAIL_REGEX } from '../../../constants/regex.constant';
+import { useMultiStepForm } from '../../../context/MultiFormProvider';
+import { useFetch } from '../../../hooks/useFetch';
+import { useHandle } from '../../../hooks/useHandle';
+import {
+  createUserSelector,
+  listGroupSelector,
+} from '../../../redux/selector/selector';
+import { reset } from '../../../redux/slices/group.slice';
 import { RouteName } from '../../../routes/route.name.enum';
 import { getRoutePathByName } from '../../../routes/routes';
-import type { CreateAdminReq, Group } from '../../../types/entities/user.type';
+import { listAdminGroupsThunk } from '../../../thunks/group.thunk';
+import type { Query } from '../../../types/entities/query.type';
+import type { Group } from '../../../types/entities/user.type';
+import { resetCreate } from '../slices/user.slice';
+import { createAdminThunk } from '../thunks/user.thunk';
+interface IProps {
+  setResult: any;
+}
+const CreateAdminForm = ({ setResult }: IProps) => {
+  const navigate = useNavigate();
+  const query: Query = {
+    page: 1,
+    size: 8,
+    sortBy: 'createdAt',
+    sortType: 'desc',
+  };
 
-type IProps = {
-  defaultValue: CreateAdminReq;
-  onCreate: (req: CreateAdminReq) => void;
-  groups: Group[];
-};
-const CreateAdminForm = ({ defaultValue, onCreate, groups }: IProps) => {
-  const navigate = useNavigate()
-  const adminGroupOptions = groups.map(group => ({
-    value: group.name,
-    label: group.name,
-  }));
+  const {
+    data: groups,
+    loading: groupLoading,
+    error: groupError,
+  } = useFetch<Group[]>({
+    query,
+    thunk: listAdminGroupsThunk,
+    options: {
+      selector: listGroupSelector,
+      resetFn: reset,
+    },
+  });
+
+  useEffect(() => {
+    if (groupLoading) {
+      spinner.show();
+    } else {
+      spinner.hide();
+    }
+  }, [groupLoading]);
+
+  const adminGroupOptions =
+    groups?.map(group => ({
+      value: group.name,
+      label: group.name,
+    })) ?? [];
+
+  const defaultValue = useMemo(
+    () => ({
+      username: '',
+      email: '',
+      firstName: '',
+      lastName: '',
+      groups: [],
+    }),
+    []
+  );
+
+  const {
+    execute,
+    data: createdUserData,
+    loading: isCreatingUser,
+    error: createdUserError,
+  } = useHandle({
+    thunk: createAdminThunk,
+    options: { selector: createUserSelector, resetFn: resetCreate },
+  });
+
+  const { nextStep } = useMultiStepForm();
+
+  const handleSubmit = useCallback(
+    (data: any) => {
+      execute(data);
+    },
+    [execute]
+  );
+
+  useEffect(() => {
+    if (isCreatingUser) {
+      spinner.show();
+    } else {
+      spinner.hide();
+    }
+
+    if (createdUserData) {
+      toast.success('Admin created');
+      nextStep();
+      setResult(createdUserData);
+      return;
+    }
+
+    if (createdUserError) {
+      toast.error(createdUserError);
+      return;
+    }
+  }, [createdUserData, isCreatingUser, createdUserError]);
 
   return (
     <Form
       className="w-full float-right"
       defaultValues={defaultValue}
-      onSubmit={onCreate}
+      onSubmit={handleSubmit}
     >
       <TextField
         id="username"

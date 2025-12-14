@@ -13,7 +13,7 @@ const PageHeader = ({ title }: PageHeaderProps) => {
   };
 
   return (
-    <div className="mb-5">
+    <div className={`sticky top-0 bg-[var(--color-secondary-background)] z-20 p-4`}>
       {/* Title */}
       <p className="font-bold text-2xl mb-4">{title}</p>
       <div className="flex items-start justify-between">
@@ -23,7 +23,9 @@ const PageHeader = ({ title }: PageHeaderProps) => {
           {/* <span className="cursor-pointer hover:underline">{path}</span> */}
           {segments.map((s, index) => {
             const path = buildPath(segments, index);
-            const isValidPath = validPaths.includes(path.replace('/', ''));
+            const subPaths = path.split("/").filter(Boolean);
+            const isValidPath = subPaths.some(p => validPaths.includes(p));
+            
             return (
               <div
                 key={index}

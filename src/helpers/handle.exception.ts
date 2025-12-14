@@ -6,7 +6,7 @@ export const handleException = (err: any,rejectWithValue: any) => {
       window.location.href = '/unauthorized';
     }
     return rejectWithValue(
-      err.response?.data?.errorMessage || 'Unauthorized'
+      err.response?.data?.errorMessage || err.message || 'Unauthorized'
     );
   }
 

@@ -2,21 +2,21 @@ import { useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import Button from '../components/Button';
-import Form from '../components/Form';
-import { spinner } from '../components/Spinner';
-import TextField from '../components/TextField';
-import { PASSWORD_REGEX } from '../constants/regex.constant';
-import { authSelector } from '../redux/selector/selector';
-import { reset } from '../redux/slices/auth.slice';
-import type { AppDispatch } from '../redux/store';
-import { RouteName } from '../routes/route.name.enum';
-import { getRoutePathByName } from '../routes/routes';
-import { signInThunk } from '../thunks/auth.thunk';
-import type { Token } from '../types/entities/auth.type';
-import type { UserSignIn } from '../types/entities/user.type';
-import type { ThunkRequest } from '../types/redux.type';
-import { encrypt } from '../types/utils/encoder';
+import Button from '../../../components/Button';
+import Form from '../../../components/Form';
+import { spinner } from '../../../components/Spinner';
+import TextField from '../../../components/TextField';
+import { PASSWORD_REGEX } from '../../../constants/regex.constant';
+import { authSelector } from '../../../redux/selector/selector';
+import { reset } from '../../../redux/slices/auth.slice';
+import type { AppDispatch } from '../../../redux/store';
+import { RouteName } from '../../../routes/route.name.enum';
+import { getRoutePathByName } from '../../../routes/routes';
+import { signInThunk } from '../../../thunks/auth.thunk';
+import type { Token } from '../../../types/entities/auth.type';
+import type { UserSignIn } from '../../../types/entities/user.type';
+import type { ThunkRequest } from '../../../types/redux.type';
+import { encrypt } from '../../../types/utils/encoder';
 
 const SignInForm = () => {
   const navigate = useNavigate();
@@ -77,7 +77,7 @@ const SignInForm = () => {
   }, [authResSelector]);
 
   return (
-    <Form defaultValue={defaultValue} onSubmit={onSubmit}>
+    <Form defaultValues={defaultValue} onSubmit={onSubmit}>
       <TextField
         id="username"
         required

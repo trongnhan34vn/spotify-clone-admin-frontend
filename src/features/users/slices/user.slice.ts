@@ -6,10 +6,10 @@ import {
   listAdminsThunk,
   listUserFilterOptionThunk,
   updateAdminThunk,
-} from '../../features/users/thunks/user.thunk';
-import type { User, UserFilterOption } from '../../types/entities/user.type';
-import type { ReduxState } from '../../types/redux.type';
-import type { Pagination } from '../../types/entities/pagination.type';
+} from '../../../features/users/thunks/user.thunk';
+import type { User, UserFilterOption } from '../../../types/entities/user.type';
+import type { ReduxState } from '../../../types/redux.type';
+import type { Pagination } from '../../../types/entities/pagination.type';
 
 type ActionState = {
   list: ReduxState<Pagination<User>>;

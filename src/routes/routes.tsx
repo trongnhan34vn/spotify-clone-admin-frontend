@@ -3,11 +3,12 @@ import CreateAdminPage from '../pages/admins/CreateAdminPage';
 import { default as AdminPage } from '../pages/admins/ListAdminPage';
 const SignIn = lazy(() => import('../pages/auth/SignIn'));
 import Dashboard from '../pages/dashboard/Dashboard';
-import GenrePage from '../pages/genres/GenrePage';
+import GenrePage from '../pages/genres/ListGenrePage';
 import NotFound from '../pages/not-found/NotFound';
 import ResetPassword from '../pages/reset-password/ResetPassword';
 import Unauthorized from '../pages/unauthorized/Unauthorized';
 import { RouteName } from './route.name.enum';
+import CreateGenrePage from '../pages/genres/CreateGenrePage';
 
 export const routes = [
   // public
@@ -55,15 +56,16 @@ export const routes = [
     private: true,
   },
   {
-    name: RouteName.EDIT_ADMIN,
-    path: '/admin/edit',
-    element: <CreateAdminPage />,
-    private: true,
-  },
-  {
     name: RouteName.GENRE,
     path: '/music/genre',
     element: <GenrePage />,
+    private: true,
+  },
+
+  {
+    name: RouteName.CREATE_GENRE,
+    path: '/music/genre/create',
+    element: <CreateGenrePage />,
     private: true,
   },
 ];

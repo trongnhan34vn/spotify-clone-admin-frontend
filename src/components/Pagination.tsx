@@ -17,9 +17,16 @@ const Pagination = ({
   hasPrevious,
 }: IProps) => {
   const getPageMeta = () => {
+    if (totalItem === 0) {
+      return { from: 0, to: 0, page, totalPage, totalItem };
+    }
+
+    const from = (page - 1) * size + 1;
+    const currentPageSize = Math.min(size, totalItem - (page - 1) * size);
+    const to = from + currentPageSize - 1;
     return {
-      from: (page - 1) * size + 1,
-      to: Math.min(page * size, totalItem),
+      from: from,
+      to: to,
       page,
       totalPage,
       totalItem,

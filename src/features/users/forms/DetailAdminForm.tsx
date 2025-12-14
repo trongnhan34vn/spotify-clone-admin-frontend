@@ -4,7 +4,7 @@ import Form from '../../../components/Form';
 import SelectField from '../../../components/SelectField';
 import TextField from '../../../components/TextField';
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo } from 'react';
 import { AiOutlineStop } from 'react-icons/ai';
 import { FaEdit } from 'react-icons/fa';
 import { MdEdit } from 'react-icons/md';

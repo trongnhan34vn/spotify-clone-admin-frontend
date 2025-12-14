@@ -12,5 +12,7 @@ export enum RouteName {
   GENRE = 'genre',
 
   CREATE_ADMIN = 'create-admin',
-  EDIT_ADMIN = 'edit-admin'
+  EDIT_ADMIN = 'edit-admin',
+
+  CREATE_GENRE = 'create-genre'
 }

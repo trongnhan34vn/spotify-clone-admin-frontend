@@ -1,5 +1,5 @@
 export type Pagination<T> = {
-  data: T[];
+  content: T[];
   totalItem: number;
   totalPage: number;
   hasPrevious: boolean;

@@ -8,7 +8,7 @@ interface IProps {
 }
 const FormSteps = ({ steps, currentStep }: IProps) => {
   return (
-    <div className="flex items-center w-1/2 gap-5">
+    <div className="flex items-center w-full gap-5 bg-[var(--color-secondary-background)] sticky top-25 z-20">
       {steps.map((s, index) => (
         <div key={index} className="flex gap-5 items-center mb-5">
           <FormStep

@@ -3,12 +3,14 @@ export type Genre = {
   code: string;
   name: string;
   createdBy: string;
-  status: GerneStatus;
+  description: string;
+  status: GenreStatus;
   updatedBy: string;
   color: string;
+  image: string;
 };
 
-export enum GerneStatus {
+export enum GenreStatus {
   ACTIVE = 'active',
   INACTIVE = 'inactive',
 }

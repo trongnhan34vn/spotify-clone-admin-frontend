@@ -21,7 +21,7 @@ import {
   resetFilter,
   resetList,
   resetUpdate,
-} from '../../redux/slices/user.slice';
+} from '../../features/users/slices/user.slice';
 import type { AppDispatch } from '../../redux/store';
 import { RouteName } from '../../routes/route.name.enum';
 import { getRoutePathByName } from '../../routes/routes';
@@ -352,7 +352,7 @@ const AdminPage = () => {
   return (
     <ListPageLayout title="Admin Management" path="/admin">
       <Table<User, User>
-        data={pagination ? pagination.data : []}
+        data={pagination ? pagination.content : []}
         columns={columns}
         onInsert={handleCreateAdmin}
         pagination={pagination!}

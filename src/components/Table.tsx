@@ -20,7 +20,7 @@ import Input from './Input';
 import Pagination from './Pagination';
 
 const Table = <TData, TValue>({
-  data,
+  data = [],
   columns,
   onRowEdit,
   onRowDelete,
@@ -33,6 +33,7 @@ const Table = <TData, TValue>({
   filterOption,
   onSearchFilter,
   selectedFilter,
+  createBtnTitle
 }: TableProps<TData, TValue>) => {
   const table = useReactTable<TData>({
     data,
@@ -43,7 +44,7 @@ const Table = <TData, TValue>({
   const addBtnComp = (
     <div className="flex items-center gap-2">
       <FiPlus size={20} />
-      <p>Add Admin</p>
+      <p>Create {createBtnTitle ?? ''}</p>
     </div>
   );
   const identifyFieldsOnFilter = (field: string) => {
@@ -95,9 +96,7 @@ const Table = <TData, TValue>({
     return (
       <Dropdown
         anchor="bottom start"
-        onChange={s => {
-
-        }}
+        onChange={s => {}}
         button={
           <div className="flex items-center cursor-pointer gap-2">
             {identifyFieldsOnFilter(field) ? (
@@ -116,10 +115,13 @@ const Table = <TData, TValue>({
             <Input
               value={sQuery?.[field]}
               onChange={(val: string) => {
-                setSQuery((prev: any) => ({
-                  ...prev,
-                  [field]: val
-                } as any));
+                setSQuery(
+                  (prev: any) =>
+                    ({
+                      ...prev,
+                      [field]: val,
+                    }) as any
+                );
                 const query: Record<string, string> = {};
                 query[field] = val;
                 onSearchFilter?.(query);
@@ -189,28 +191,30 @@ const Table = <TData, TValue>({
   return (
     <div>
       {/* Functional Bar */}
-      <div className="float-right flex items-center gap-4 mb-5">
-        {/* Search Feature */}
-        <div className="flex items-center border-[1px] hover:border-[#fff] transition-all focus-within:border-[#fff] group duration-200 ease-in rounded-[500px] px-3 border-[var(--color-border)]">
-          <MdOutlineSearch
-            size={36}
-            className="group-hover:!text-[#fff] text-[var(--color-border)] group-focus-within:text-white transition-all group duration-200 ease-in"
-          />
-          <Input
-            onChange={onSearch}
-            className="!border-none"
-            placeholder="Search..."
-            id="search"
+      {onInsert && (
+        <div className="float-right flex items-center gap-4 mb-5">
+          {/* Search Feature */}
+          <div className="flex items-center border-[1px] hover:border-[#fff] transition-all focus-within:border-[#fff] group duration-200 ease-in rounded-[500px] px-3 border-[var(--color-border)]">
+            <MdOutlineSearch
+              size={36}
+              className="group-hover:!text-[#fff] text-[var(--color-border)] group-focus-within:text-white transition-all group duration-200 ease-in"
+            />
+            <Input
+              onChange={onSearch}
+              className="!border-none"
+              placeholder="Search..."
+              id="search"
+            />
+          </div>
+          {/* Add Feature */}
+          <Button
+            onClick={onInsert}
+            className="!px-4 flex-1 w-fit"
+            type="button"
+            label={addBtnComp}
           />
         </div>
-        {/* Add Feature */}
-        <Button
-          onClick={onInsert}
-          className="!px-4 flex-1 w-fit"
-          type="button"
-          label={addBtnComp}
-        />
-      </div>
+      )}
 
       <table border={1} className="w-full table table-fixed">
         <thead>
@@ -269,7 +273,7 @@ const Table = <TData, TValue>({
                     'actions'
                   ) {
                     return (
-                      <td key={cell.id} className='text-center'>
+                      <td key={cell.id} className="text-center">
                         <ActionButtons
                           data={row.original as any}
                           onDelete={onRowDelete}
@@ -299,7 +303,7 @@ const Table = <TData, TValue>({
           )}
         </tbody>
       </table>
-      {table.getRowModel().rows.length !== 0 && pagination && (
+      {table.getRowModel().rows.length > 0 && pagination && (
         <Pagination
           totalItem={pagination.totalItem}
           page={pagination.page}

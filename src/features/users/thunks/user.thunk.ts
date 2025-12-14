@@ -15,9 +15,8 @@ export const listAdminsThunk = createAsyncThunk(
   'users/listAdmins',
   async (query: Query, { rejectWithValue }) => {
     try {
-      console.log('re-list');
-
       return await listAdminsService(query);
+      
     } catch (err: any) {
       console.error('[Thunk] Error occurred when listing admins', err.message);
 
