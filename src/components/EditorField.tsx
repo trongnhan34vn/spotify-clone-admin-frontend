@@ -10,6 +10,7 @@ interface IProps {
   containerClassName?: string;
   className?: string;
   required?: boolean;
+  disabled?: boolean;
 }
 const EditorField = ({
   name,
@@ -17,6 +18,7 @@ const EditorField = ({
   id,
   containerClassName,
   className,
+  disabled,
   required,
 }: IProps) => {
   const { control } = useFormContext();
@@ -35,6 +37,7 @@ const EditorField = ({
           return (
             <>
               <TiptapEditor
+                disabled={disabled}
                 className={error ? '!border-red-500' : ''}
                 id={id}
                 value={value}

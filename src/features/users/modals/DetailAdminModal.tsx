@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import SideModal from '../../../components/SideModal';
 import DetailAdminForm from '../forms/DetailAdminForm';
 
-import AlertModal from '../../../modals/AlertSaveModal';
 import { useModal } from '../../../hooks/useModal';
+import AlertModal from '../../../modals/AlertSaveModal';
 import type { Group, User } from '../../../types/entities/user.type';
 interface IProps {
   open: boolean;

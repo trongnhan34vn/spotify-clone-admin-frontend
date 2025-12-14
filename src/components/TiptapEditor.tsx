@@ -20,8 +20,17 @@ interface IProps {
   onChange: (value: string) => void;
   value: string;
   className?: string;
+  disabled?: boolean;
+  inputClassName?: string;
 }
-const TiptapEditor = ({ id, value, onChange, className }: IProps) => {
+const TiptapEditor = ({
+  id,
+  value,
+  onChange,
+  className,
+  disabled,
+  inputClassName,
+}: IProps) => {
   const [rerender, setRerender] = useState(0);
   const cleanHTML = (html: string) => {
     const trimmed = html.trim();
@@ -49,6 +58,7 @@ const TiptapEditor = ({ id, value, onChange, className }: IProps) => {
     onUpdate({ editor }) {
       onChange(cleanHTML(editor.getHTML()));
     },
+    editable: !disabled,
   });
   useEffect(() => {
     if (!editor) return;
@@ -70,17 +80,23 @@ const TiptapEditor = ({ id, value, onChange, className }: IProps) => {
     }
   }, [value, editor]);
 
+  useEffect(() => {
+    if (editor) {
+      editor.setEditable(!disabled);
+    }
+  }, [editor, disabled]);
+
   const IconButton = ({ active, onClick, children }: any) => (
     <button
+      disabled={disabled}
       onClick={onClick}
       onMouseDown={e => e.preventDefault()}
       type="button"
-      className={
-        'p-2 border cursor-pointer rounded flex items-center justify-center ' +
-        (active
+      className={`${disabled ? 'cursor-not-allowed' : 'cursor-pointer'} ${
+        active
           ? 'bg-[var(--color-primary)] border-white text-white'
-          : 'bg-transparent border-[var(--color-border)] text-[var(--color-border)]')
-      }
+          : 'bg-transparent border-[var(--color-border)] text-[var(--color-border)]'
+      } p-2 border rounded flex items-center justify-center`}
     >
       {children}
     </button>
@@ -88,7 +104,7 @@ const TiptapEditor = ({ id, value, onChange, className }: IProps) => {
 
   return (
     <div
-      className={`${className} hover:border-white focus:border-white focus-within:border-white transition-all duration-200 ease-in border rounded border-[var(--color-border)] p-4`}
+      className={`${className} ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'} hover:border-white focus:border-white focus-within:border-white transition-all duration-200 ease-in border rounded border-[var(--color-border)] p-4`}
     >
       {/* Toolbar */}
       <div className="flex flex-wrap gap-2 mb-3">
@@ -156,7 +172,8 @@ const TiptapEditor = ({ id, value, onChange, className }: IProps) => {
       <EditorContent
         id={id}
         editor={editor}
-        className="border-[1px] border-[var(--color-border)] rounded h-54 editor-content"
+        disabled={disabled}
+        className={`${inputClassName} ${disabled ? 'pointer-events-none cursor-not-allowed' : ''} border-[1px] border-[var(--color-border)] rounded h-54 editor-content`}
       />
     </div>
   );
