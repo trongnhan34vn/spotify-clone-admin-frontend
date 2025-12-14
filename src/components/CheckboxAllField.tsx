@@ -9,7 +9,7 @@ const CheckboxAllField = ({ name, options }: IProps) => {
   const { watch, setValue } = useFormContext();
   const values = watch(name) || [];
 
-  const isAll = values.length === options.length;
+  const isAll = values.length === options?.length;
 
   return (
     <CheckboxInput

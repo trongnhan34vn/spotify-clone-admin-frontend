@@ -33,7 +33,7 @@ const Table = <TData, TValue>({
   filterOption,
   onSearchFilter,
   selectedFilter,
-  createBtnTitle
+  createBtnTitle,
 }: TableProps<TData, TValue>) => {
   const table = useReactTable<TData>({
     data,
@@ -49,6 +49,7 @@ const Table = <TData, TValue>({
   );
   const identifyFieldsOnFilter = (field: string) => {
     if (!selectedFilter || !filterOption) return false;
+    if (filterOption.length == 0) return false;
     const selects = selectedFilter[field];
     const refs = filterOption[field];
     if (selects.length < refs.length) return true;
@@ -171,7 +172,7 @@ const Table = <TData, TValue>({
             label={
               <div className="w-full flex mt-1 mb-1 gap-2">
                 <Button
-                  disabled={filters.length == 0}
+                  disabled={filters?.length == 0}
                   type="submit"
                   className="!p-0 hover:!scale-100 !rounded"
                   label="Apply"

@@ -8,6 +8,7 @@ export type Genre = {
   updatedBy: string;
   color: string;
   image: string;
+  createdAt: string;
 };
 
 export enum GenreStatus {
@@ -22,5 +23,4 @@ export type GenreFilterOption = {
   code: string[];
   status: string[];
   color: string[];
-  createdBy: string[];
 };

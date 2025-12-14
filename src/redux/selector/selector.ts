@@ -10,5 +10,6 @@ export const createUserSelector = (state: RootState) => state.user.create;
 export const listGenreSelector = (state: RootState) => state.genre.list;
 export const detailGenreSelector = (state: RootState) => state.genre.detail;
 export const createGenreSelector = (state: RootState) => state.genre.create;
+export const listGenreFilterOptionsSelector = (state: RootState) => state.genre.listFilterOption;
 
 export const listGroupSelector = (state: RootState) => state.group.list;

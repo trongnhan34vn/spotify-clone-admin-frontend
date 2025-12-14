@@ -132,6 +132,7 @@ const AdminPage = () => {
   // ====== FILTER ====== //
   useEffect(() => {
     dispatch(listUserFilterOptionThunk());
+    dispatch(listAdminGroupsThunk());
   }, []);
 
   const listFilterOptionRes = useSelector(userSelector).listFilterOption;
@@ -140,6 +141,12 @@ const AdminPage = () => {
     useState<UserFilterOption | null>();
 
   const [isFilterReady, setFilterReady] = useState(false);
+  const [adminGroups, setAdminGroups] = useState<Group[]>([]);
+  const listAdminGroupRes = useSelector(groupSelector).list;
+
+  useEffect(() => {
+
+  }, [listAdminGroupRes]);
 
   useEffect(() => {
     const { data, error, loading } = listFilterOptionRes;
@@ -154,15 +161,23 @@ const AdminPage = () => {
       setInitFilterState(strictData as UserFilterOption);
       setQuery(pre => ({ ...pre, filter: strictData }));
       setFilterReady(true);
-      spinner.hide();
       dispatch(resetFilter());
       return;
+    }
+
+    if (listAdminGroupRes.data) {
+      setAdminGroups(listAdminGroupRes.data as Group[]);
+      dispatch(reset());
+    }
+
+    if (data && listAdminGroupRes.data) {
+      spinner.hide();
     }
 
     if (loading) {
       spinner.show();
     }
-  }, [listFilterOptionRes]);
+  }, [listFilterOptionRes, listAdminGroupRes]);
 
   const handleSearchFilterOption = (query: Record<string, string>) => {
     if (!initFilterState) {
@@ -218,28 +233,10 @@ const AdminPage = () => {
 
     return;
   }, [listRes]);
-
-  const [adminGroups, setAdminGroups] = useState<Group[]>([]);
-
-  useEffect(() => {
-    spinner.show();
-    dispatch(listAdminGroupsThunk());
-  }, []);
-
-  const listAdminGroupRes = useSelector(groupSelector).list;
-
-  useEffect(() => {
-    if (!listAdminGroupRes.data) return;
-    setAdminGroups(listAdminGroupRes.data as Group[]);
-    spinner.hide();
-    dispatch(reset());
-  }, [listAdminGroupRes]);
   // ====== LIST ====== //
 
   // ====== CREATE ====== //
   const handleCreateAdmin = useCallback(() => {
-    console.log("A");
-    
     navigate(getRoutePathByName(RouteName.CREATE_ADMIN));
   }, []);
   // ====== CREATE ====== //

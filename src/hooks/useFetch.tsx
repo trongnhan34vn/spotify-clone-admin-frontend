@@ -4,7 +4,7 @@ import type { AppDispatch } from '../redux/store';
 import type { Query } from '../types/entities/query.type';
 
 interface IProps {
-  query: Query;
+  query?: Query;
   thunk: any;
   options: {
     selector?: any;

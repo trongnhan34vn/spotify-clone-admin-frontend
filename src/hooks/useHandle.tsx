@@ -9,7 +9,7 @@ interface IProps {
     resetFn: any;
   };
 }
-export const useHandle = ({
+export const useHandle=<T,> ({
   thunk,
   options: { selector, resetFn },
 }: IProps) => {
@@ -19,8 +19,8 @@ export const useHandle = ({
     error: reduxError,
     loading: reduxLoading,
   } = useSelector(selector) as any;
-  const [data, setData] = useState();
-  const [error, setError] = useState();
+  const [data, setData] = useState<T>();
+  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const execute = (...args: any) => {
     return dispatch(thunk(...args));

@@ -66,13 +66,7 @@ const TextField = ({
             <Input
               hidden={hidden}
               disabled={disabled}
-              defaultValue={
-                defaultValue !== undefined && defaultValue !== null
-                  ? defaultValue
-                  : name !== 'id'
-                    ? value
-                    : `${EntityCode.ADMIN}${value?.slice(0, 6).toUpperCase() ?? ''}`
-              }
+              value={value}
               // defaultValue={value}
               className={`${error ? 'border-red-500' : ''} ${childClassName} ${disabled ? ' cursor-not-allowed' : ''}`}
               type={type}

@@ -3,7 +3,7 @@ import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
 type IProps = {
-  enabled: boolean;
+  enabled?: boolean;
   onToggle?: (val: boolean) => void;
   hiddenLabel?: boolean;
   disabled?: boolean;
@@ -24,7 +24,7 @@ const SwitchField = ({
 }: IProps) => {
   const { control } = useFormContext();
   return (
-    <div className={`mb-4 ${hidden && 'hidden'} w-full`}>
+    <div className={`${className} mb-4 ${hidden && 'hidden'} w-full`}>
       <Controller
         control={control}
         name={name}
