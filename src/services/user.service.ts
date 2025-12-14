@@ -1,6 +1,6 @@
-import type { CreateAdminReq, User } from '../../../types/entities/user.type';
-import type { Query } from '../../../types/entities/query.type';
-import { http } from '../../../services';
+import type { CreateAdminReq, User } from '../types/entities/user.type';
+import type { Query } from '../types/entities/query.type';
+import { http } from '../services';
 
 export const listAdminsService = async (query: Query) => {
   const { sortBy, sortType, size, page, filter } = query;

@@ -8,8 +8,8 @@ import {
   listUserFilterOptionService,
   updateAdminService,
 } from '../services/user.service';
-import type { CreateAdminReq, User } from '../../../types/entities/user.type';
-import type { Query } from '../../../types/entities/query.type';
+import type { CreateAdminReq, User } from '../types/entities/user.type';
+import type { Query } from '../types/entities/query.type';
 
 export const listAdminsThunk = createAsyncThunk(
   'users/listAdmins',

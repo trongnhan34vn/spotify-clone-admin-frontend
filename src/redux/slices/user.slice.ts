@@ -6,10 +6,10 @@ import {
   listAdminsThunk,
   listUserFilterOptionThunk,
   updateAdminThunk,
-} from '../../../features/users/thunks/user.thunk';
-import type { User, UserFilterOption } from '../../../types/entities/user.type';
-import type { ReduxState } from '../../../types/redux.type';
-import type { Pagination } from '../../../types/entities/pagination.type';
+} from '../../thunks/user.thunk';
+import type { Pagination } from '../../types/entities/pagination.type';
+import type { User, UserFilterOption } from '../../types/entities/user.type';
+import type { ReduxState } from '../../types/redux.type';
 
 type ActionState = {
   list: ReduxState<Pagination<User>>;
@@ -143,5 +143,11 @@ const userSlice = createSlice({
 });
 
 export default userSlice.reducer;
-export const { resetCreate, resetList, resetDetail, resetDelete, resetUpdate, resetFilter } =
-  userSlice.actions;
+export const {
+  resetCreate,
+  resetList,
+  resetDetail,
+  resetDelete,
+  resetUpdate,
+  resetFilter,
+} = userSlice.actions;

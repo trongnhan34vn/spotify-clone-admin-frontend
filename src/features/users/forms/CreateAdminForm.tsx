@@ -21,8 +21,8 @@ import { getRoutePathByName } from '../../../routes/routes';
 import { listAdminGroupsThunk } from '../../../thunks/group.thunk';
 import type { Query } from '../../../types/entities/query.type';
 import type { Group } from '../../../types/entities/user.type';
-import { resetCreate } from '../slices/user.slice';
-import { createAdminThunk } from '../thunks/user.thunk';
+import { resetCreate } from '../../../redux/slices/user.slice';
+import { createAdminThunk } from '../../../thunks/user.thunk';
 interface IProps {
   setResult: any;
 }

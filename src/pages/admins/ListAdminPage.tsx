@@ -21,7 +21,7 @@ import {
   resetFilter,
   resetList,
   resetUpdate,
-} from '../../features/users/slices/user.slice';
+} from '../../redux/slices/user.slice';
 import type { AppDispatch } from '../../redux/store';
 import { RouteName } from '../../routes/route.name.enum';
 import { getRoutePathByName } from '../../routes/routes';
@@ -32,7 +32,7 @@ import {
   listAdminsThunk,
   listUserFilterOptionThunk,
   updateAdminThunk,
-} from '../../features/users/thunks/user.thunk';
+} from '../../thunks/user.thunk';
 import type { Pagination } from '../../types/entities/pagination.type';
 import type { Query } from '../../types/entities/query.type';
 import type { Group, User, UserFilterOption } from '../../types/entities/user.type';

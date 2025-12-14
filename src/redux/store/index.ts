@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import auth from '../slices/auth.slice'
-import user from '../../features/users/slices/user.slice'
+import user from '../slices/user.slice'
 import group from '../slices/group.slice'
 import genre from '../slices/genre.slice'
 export const store = configureStore({
