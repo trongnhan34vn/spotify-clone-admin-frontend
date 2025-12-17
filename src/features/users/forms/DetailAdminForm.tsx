@@ -62,7 +62,7 @@ const DetailAdminForm = ({
       key: key,
       value: value,
     }));
-    const unableEditFields = ['username', 'email', 'id', 'createdAt', 'status'];
+    const unableEditFields = ['username', 'email', 'id', 'createdAt', 'status', 'code'];
     const noneRequireFields = ['birthDay', 'phone', 'address'];
     const fieldComponents = fields.map((f, index) => {
       if (f.key == 'status') return;

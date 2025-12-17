@@ -52,7 +52,7 @@ const Table = <TData, TValue>({
     if (filterOption.length == 0) return false;
     const selects = selectedFilter[field];
     const refs = filterOption[field];
-    if (selects.length < refs.length) return true;
+    if (selects?.length < refs?.length) return true;
     return false;
   };
 
@@ -295,7 +295,7 @@ const Table = <TData, TValue>({
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
-                      )}
+                      ) ?? ''}
                     </td>
                   );
                 })}

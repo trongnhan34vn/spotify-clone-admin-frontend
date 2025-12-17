@@ -39,7 +39,7 @@ const DetailGenreModal = ({ detail, open, close }: IProps) => {
     {
       accessorKey: 'color',
       type: 'color',
-      editable: false,
+      editable: true,
     },
     {
       accessorKey: 'description',
@@ -153,10 +153,15 @@ const DetailGenreModal = ({ detail, open, close }: IProps) => {
             defaultValues={newDetail}
             onSubmit={() => {}}
           >
-            <div className="flex justify-between w-full items-center  mb-5">
-              <div>
-              <p className="font-bold mb-2 text-2xl">{detail?.name ?? 'Title'}</p>
-              <div className='text-sm' dangerouslySetInnerHTML={{__html: detail?.description}}></div>
+            <div className="flex justify-between w-full items-center gap-5 mb-5">
+              <div className='!flex-1'>
+                <p className="font-bold mb-2 text-2xl">
+                  {detail?.name ?? 'Title'}
+                </p>
+                <div
+                  className="text-sm text-[#ccc]"
+                  dangerouslySetInnerHTML={{ __html: detail?.description }}
+                ></div>
               </div>
               <SwitchField
                 className="!mb-0 !w-fit"

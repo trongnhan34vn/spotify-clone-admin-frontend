@@ -49,18 +49,12 @@ const AdminPage = () => {
   });
   const columns: ColumnDef<User, User>[] = [
     {
-      accessorKey: 'id',
+      accessorKey: 'code',
       header: 'ID',
       cell: (ctx: CellContext<User, User>) => {
-        const user: string = ctx.getValue<string>();
-
-        return (
-          <div className="font-bold">
-            {EntityCode.ADMIN}
-            {user?.slice(0, 6).toUpperCase()}
-          </div>
-        );
-      },
+        const user = ctx.row.original
+        return <p className='font-bold'>{user.code}</p>
+      }
     },
     {
       accessorKey: 'username',

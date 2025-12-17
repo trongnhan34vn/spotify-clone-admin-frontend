@@ -5,6 +5,7 @@ export type UserSignIn = {
 
 export type User = {
   id: string;
+  code: string;
   username: string;
   email: string;
   image: string;
