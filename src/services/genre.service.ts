@@ -30,7 +30,7 @@ export const createGenreService = async (data: CreateGenre) => {
 
 export const deleteGenreService = async (id: string) => {
   const response = await http().delete(
-    '/api/v1/business/genres/delete' + id
+    '/api/v1/business/genres/delete/' + id
   );
   return response.data;
 };

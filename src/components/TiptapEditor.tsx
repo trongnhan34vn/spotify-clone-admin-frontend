@@ -104,7 +104,7 @@ const TiptapEditor = ({
 
   return (
     <div
-      className={`${className} ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'} hover:border-white focus:border-white focus-within:border-white transition-all duration-200 ease-in border rounded border-[var(--color-border)] p-4`}
+      className={`${className} ${disabled ? 'cursor-not-allowed' : ''} hover:border-white focus:border-white focus-within:border-white transition-all duration-200 ease-in border rounded border-[var(--color-border)] p-4`}
     >
       {/* Toolbar */}
       <div className="flex flex-wrap gap-2 mb-3">

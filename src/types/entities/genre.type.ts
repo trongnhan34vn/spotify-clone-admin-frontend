@@ -2,13 +2,13 @@ export type Genre = {
   id: string;
   code: string;
   name: string;
-  createdBy: string;
   description: string;
   status: GenreStatus;
-  updatedBy: string;
   color: string;
   image: string;
   createdAt: string;
+  updatedBy: string;
+  createdBy: string;
 };
 
 export enum GenreStatus {

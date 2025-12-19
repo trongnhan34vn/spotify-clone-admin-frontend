@@ -1,12 +1,30 @@
 import type { ColumnDef } from '@tanstack/react-table';
 import { useEffect, useMemo, useState } from 'react';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
+import Badge from '../../../components/Badge';
+import DeleteModal from '../../../components/DeleteModal';
+import Spinner, { spinner } from '../../../components/Spinner';
+import Table from '../../../components/Table';
 import { useFetch } from '../../../hooks/useFetch';
+import { useHandle } from '../../../hooks/useHandle';
+import { useModal } from '../../../hooks/useModal';
 import {
+  deleteGenreSelector,
   detailGenreSelector,
   listGenreFilterOptionsSelector,
   listGenreSelector,
 } from '../../../redux/selector/selector';
 import {
+  resetDelete,
+  resetDetail,
+  resetList,
+  resetListFilterOption,
+} from '../../../redux/slices/genre.slice';
+import { RouteName } from '../../../routes/route.name.enum';
+import { getRoutePathByName } from '../../../routes/routes';
+import {
+  deleteGenreThunk,
   detailGenreThunk,
   listGenreFilterOptionsThunk,
   listGenreThunk,
@@ -16,23 +34,9 @@ import {
   type Genre,
   type GenreFilterOption,
 } from '../../../types/entities/genre.type';
-import type { Query } from '../../../types/entities/query.type';
-import Table from '../../../components/Table';
 import type { Pagination } from '../../../types/entities/pagination.type';
-import { useNavigate } from 'react-router-dom';
-import { getRoutePathByName } from '../../../routes/routes';
-import { RouteName } from '../../../routes/route.name.enum';
-import {
-  resetDetail,
-  resetList,
-  resetListFilterOption,
-} from '../../../redux/slices/genre.slice';
-import Badge from '../../../components/Badge';
+import type { Query } from '../../../types/entities/query.type';
 import { capitalizeFirst } from '../../../types/utils/string.format';
-import Spinner, { spinner } from '../../../components/Spinner';
-import { useHandle } from '../../../hooks/useHandle';
-import toast from 'react-hot-toast';
-import { useModal } from '../../../hooks/useModal';
 import DetailGenreModal from '../modal/DetailGenreModal';
 
 const ListGenreForm = () => {
@@ -47,6 +51,7 @@ const ListGenreForm = () => {
     data: pagination,
     error: listError,
     loading: listLoading,
+    refetch: refetchList
   } = useFetch<Pagination<Genre>>({
     query,
     thunk: listGenreThunk,
@@ -145,9 +150,8 @@ const ListGenreForm = () => {
   };
 
   const {
-    execute,
+    execute: detailExecute,
     data: detailGenre,
-    loading: detailLoading,
     error: detailError,
   } = useHandle<Genre>({
     thunk: detailGenreThunk,
@@ -155,7 +159,7 @@ const ListGenreForm = () => {
   });
 
   const onRowDetail = (id: string) => {
-    execute(id);
+    detailExecute(id);
   };
 
   const {
@@ -168,12 +172,67 @@ const ListGenreForm = () => {
     if (detailError) {
       toast.error(detailError);
       return;
-    } 
+    }
     if (detailGenre) {
-      openDetailModal()
+      openDetailModal();
       return;
     }
   }, [detailError, detailGenre]);
+
+  const {
+    open: openDeleteModal,
+    close: closeDeleteModal,
+    isOpen: isDeleteModalOpen,
+  } = useModal();
+
+  const [deleteGenre, setDeleteGenre] = useState<Genre>()
+
+  const {
+    execute: deleteExecute,
+    error: deleteError,
+    data: deleteData,
+    loading: deleteLoading,
+  } = useHandle({
+    thunk: deleteGenreThunk,
+    options: {
+      selector: deleteGenreSelector,
+      resetFn: resetDelete,
+    },
+  });
+
+  const handleOpenDeleteModal = (data: Genre) => {
+    setDeleteGenre(data)
+    openDeleteModal();
+  }
+
+  const handleDeleteGenre = (id: string) => {
+    deleteExecute(id);
+  }
+
+  useEffect(() => {
+    if (deleteLoading) {
+      spinner.show()
+      return;
+    }
+
+    spinner.hide()
+
+  }, [deleteLoading])
+
+  useEffect(() => {
+    if (deleteError) {
+      toast.error(deleteError);
+      return;
+    }
+
+    if (deleteData) {
+      toast.success("Genre deleted");
+      closeDeleteModal()
+      refetchList();
+      return;
+    }
+
+  }, [deleteError, deleteData, refetchList])
 
   return (
     <div>
@@ -183,12 +242,23 @@ const ListGenreForm = () => {
         pagination={pagination}
         onInsert={onCreateGenre}
         onRowDetail={onRowDetail}
+        onRowDelete={handleOpenDeleteModal}
         filterOption={filterOptions}
       />
+
       <DetailGenreModal
         detail={detailGenre as Genre}
         open={isOpenDetailModal}
         close={closeDetailModal}
+      />
+
+      <DeleteModal<Genre>
+        open={isDeleteModalOpen}
+        close={closeDeleteModal}
+        title="Delete Genre"
+        target={deleteGenre!}
+        onDelete={handleDeleteGenre}
+        type={'genre'}
       />
       <Spinner />
     </div>

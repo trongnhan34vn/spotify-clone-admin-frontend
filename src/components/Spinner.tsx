@@ -15,7 +15,7 @@ const Spinner = () => {
   if(!loading) return;
 
   return (
-    <div className="absolute inset-0 z-[9999] flex items-center backdrop-blur-sm justify-center">
+    <div className="absolute inset-0 h-full z-[9999] flex items-center backdrop-blur-sm justify-center">
       <div className="flex flex-col mb-32 items-center gap-2">
         <p className="text-white text-lg font-medium">Loading...</p>
         <HashLoader color="#1DB954" loading={true} />

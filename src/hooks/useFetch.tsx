@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch } from '../redux/store';
 import type { Query } from '../types/entities/query.type';
@@ -18,12 +18,17 @@ export const useFetch = <T,>({
   options: { selector, skip = false, resetFn },
 }: IProps) => {
   const dispatch = useDispatch<AppDispatch>();
+  const queryRef = useRef<Query | undefined>(query);
 
   const [data, setData] = useState<T>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const reduxState = useSelector(selector as any) as any;
+
+  useEffect(() => {
+    queryRef.current = query;
+  }, [query]);
 
   const {
     data: reduxData,
@@ -48,9 +53,8 @@ export const useFetch = <T,>({
   }, [reduxError]);
 
   // Auto dispatch on mount or query change
-
   useEffect(() => {
-    if (!skip) {
+    if (!skip && query !== undefined) {
       dispatch(thunk(query));
     }
   }, [dispatch, thunk, JSON.stringify(query), skip]);
