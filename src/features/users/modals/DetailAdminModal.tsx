@@ -70,7 +70,7 @@ const DetailAdminModal = ({
 
   const handleAbort = useCallback(() => {
         handleResetChanges();
-        plugAlertModal.close();
+        close()
   }, [])
 
   return (
