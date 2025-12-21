@@ -1,11 +1,10 @@
-import React, {
-  Fragment,
+import { Menu, MenuButton, MenuItems } from '@headlessui/react';
+import {
   useEffect,
   useRef,
   useState,
-  type ReactNode,
+  type ReactNode
 } from 'react';
-import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 
 export type AnchorProps =
   | 'top'

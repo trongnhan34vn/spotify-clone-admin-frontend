@@ -63,7 +63,7 @@ const Header = () => {
           <DropdownItem
             className="!cursor-default hover:!bg-transparent "
             label={
-              <div>
+              <div className='p-2'>
                 <p className="text-start">{username}</p>
                 <p className="text-xs text-[var(--color-muted)] font-light">
                   trongnhan34vn@gmail.com
@@ -72,10 +72,10 @@ const Header = () => {
             }
           />
           <DivideBar />
-          <DropdownItem label={'Account'} />
+          <DropdownItem className='py-1 px-2 hover:bg-white/4 transition-all duration-150 ease-in !rounded-none' label={'Account'} />
           <DropdownItem
             onClick={() => signOut()}
-            className="text-red-500"
+            className="text-red-500 py-1 px-2 hover:bg-white/4 transition-all duration-150 ease-in !rounded-none"
             label={'Sign Out'}
           />
         </Dropdown>
