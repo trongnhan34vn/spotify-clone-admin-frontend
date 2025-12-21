@@ -58,7 +58,7 @@ const DetailGenreModal = ({ detail, open, close, onEdit }: IProps) => {
 
   const handleAbort = useCallback(() => {
     handleResetChanges();
-    close()
+    close();
   }, []);
 
   return (

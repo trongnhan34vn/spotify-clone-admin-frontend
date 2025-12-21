@@ -88,7 +88,7 @@ const DetailAdminModal = ({
           adminGroups={adminGroups}
           changes={changes}
           addChanges={handleAddChanges}
-          formRef={formRef}
+          ref={formRef}
           resetChanges={handleResetChanges}
         />
       </SideModal>

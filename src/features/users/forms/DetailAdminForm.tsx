@@ -4,13 +4,14 @@ import Form from '../../../components/Form';
 import SelectField from '../../../components/SelectField';
 import TextField from '../../../components/TextField';
 
-import { useCallback, useMemo } from 'react';
+import { forwardRef, useCallback, useMemo } from 'react';
 import { AiOutlineStop } from 'react-icons/ai';
 import { FaEdit } from 'react-icons/fa';
 import { MdEdit } from 'react-icons/md';
 import SwitchField from '../../../components/SwitchField';
 import type { Group, User } from '../../../types/entities/user.type';
 import { capitalizeFirst } from '../../../types/utils/string.format';
+import { normalizeDefaultValues } from '../../../utils/normalize.util';
 
 type IProps = {
   defaultValue: User;
@@ -19,25 +20,28 @@ type IProps = {
   adminGroups?: Group[];
   changes?: string[];
   addChanges?: (change: string) => void;
-  formRef?: any;
   resetChanges?: () => void;
 };
-const DetailAdminForm = ({
-  defaultValue,
-  onCloseModal,
-  onEdit,
-  adminGroups = [],
-  changes = [],
-  addChanges,
-  formRef,
-  resetChanges,
-}: IProps) => {
+const DetailAdminForm = forwardRef<HTMLFormElement, IProps>(
+  (
+    {
+      defaultValue,
+      onCloseModal,
+      onEdit,
+      adminGroups = [],
+      changes = [],
+      addChanges,
+      resetChanges,
+    },
+    ref
+  ) => {
   const adminGroupOptions = useMemo(() => {
     return adminGroups.map(ag => ({
       label: ag.name,
       value: ag.name,
     }));
   }, [adminGroups]);
+  
 
   const editFieldComponent = useCallback((field: string) => {
     return (
@@ -143,13 +147,15 @@ const DetailAdminForm = ({
     resetChanges?.();
     onEdit?.(data);
   };
+  
+  const defaultValues = normalizeDefaultValues(defaultValue);
 
   return (
     <div className="w-full gap-8">
       <Form
-        ref={formRef}
+        ref={ref}
         className="w-full"
-        defaultValues={defaultValue}
+        defaultValues={defaultValues}
         onSubmit={data => handleEdit(data)}
       >
         <div className="p-4">
@@ -209,6 +215,8 @@ const DetailAdminForm = ({
       </Form>
     </div>
   );
-};
+});
+
+DetailAdminForm.displayName='DetailAdminForm'
 
 export default DetailAdminForm;
