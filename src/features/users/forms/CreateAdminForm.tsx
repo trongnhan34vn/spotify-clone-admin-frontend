@@ -38,7 +38,6 @@ const CreateAdminForm = ({ setResult }: IProps) => {
   const {
     data: groups,
     loading: groupLoading,
-    error: groupError,
   } = useFetch<Group[]>({
     query,
     thunk: listAdminGroupsThunk,
