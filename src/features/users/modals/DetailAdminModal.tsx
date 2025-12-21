@@ -64,9 +64,14 @@ const DetailAdminModal = ({
   };
 
   const handleCloseAlertModal = useCallback(() => {
-    handleResetChanges();
+    // handleResetChanges();
     plugAlertModal.close();
   }, []);
+
+  const handleAbort = useCallback(() => {
+        handleResetChanges();
+        plugAlertModal.close();
+  }, [])
 
   return (
     <div>
@@ -88,10 +93,10 @@ const DetailAdminModal = ({
         />
       </SideModal>
       <AlertModal
-        onSave={handleSave}
         open={plugAlertModal.isOpen}
         closeModal={handleCloseAlertModal}
-        onAbort={close}
+        onSave={handleSave}
+        onAbort={handleAbort}
       />
     </div>
   );

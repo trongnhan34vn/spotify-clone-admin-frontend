@@ -7,11 +7,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Badge from '../../components/Badge';
 import Spinner, { spinner } from '../../components/Spinner';
-import Table from '../../components/Table';
-import { EntityCode } from '../../constants/entity.code.constant';
+import DeleteAdminForm from '../../features/users/forms/DeleteAdminForm';
+import DetailAdminModal from '../../features/users/modals/DetailAdminModal';
 import { useModal } from '../../hooks/useModal';
 import ListPageLayout from '../../layouts/PageLayout';
-import DetailAdminModal from '../../features/users/modals/DetailAdminModal';
 import Modal from '../../modals/Modal';
 import { groupSelector, userSelector } from '../../redux/selector/selector';
 import { reset } from '../../redux/slices/group.slice';
@@ -35,8 +34,12 @@ import {
 } from '../../thunks/user.thunk';
 import type { Pagination } from '../../types/entities/pagination.type';
 import type { Query } from '../../types/entities/query.type';
-import type { Group, User, UserFilterOption } from '../../types/entities/user.type';
-import DeleteAdminForm from '../../features/users/forms/DeleteAdminForm';
+import type {
+  Group,
+  User,
+  UserFilterOption,
+} from '../../types/entities/user.type';
+import AppTable from '../../components/table';
 const AdminPage = () => {
   // ====== CONFIG ====== //
   const dispatch = useDispatch<AppDispatch>();
@@ -52,9 +55,9 @@ const AdminPage = () => {
       accessorKey: 'code',
       header: 'ID',
       cell: (ctx: CellContext<User, User>) => {
-        const user = ctx.row.original
-        return <p className='font-bold'>{user.code}</p>
-      }
+        const user = ctx.row.original;
+        return <p className="font-bold">{user.code}</p>;
+      },
     },
     {
       accessorKey: 'username',
@@ -137,10 +140,6 @@ const AdminPage = () => {
   const [isFilterReady, setFilterReady] = useState(false);
   const [adminGroups, setAdminGroups] = useState<Group[]>([]);
   const listAdminGroupRes = useSelector(groupSelector).list;
-
-  useEffect(() => {
-
-  }, [listAdminGroupRes]);
 
   useEffect(() => {
     const { data, error, loading } = listFilterOptionRes;
@@ -342,7 +341,7 @@ const AdminPage = () => {
 
   return (
     <ListPageLayout title="Admin Management" path="/admin">
-      <Table<User, User>
+      <AppTable<User, User>
         data={pagination ? pagination.content : []}
         columns={columns}
         onInsert={handleCreateAdmin}
@@ -356,7 +355,7 @@ const AdminPage = () => {
         selectedFilter={query.filter}
       />
       <Spinner />
-      
+
       <DetailAdminModal
         open={plugDetailAdmin.isOpen}
         close={plugDetailAdmin.close}

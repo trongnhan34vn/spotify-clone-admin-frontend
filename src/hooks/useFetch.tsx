@@ -10,12 +10,13 @@ interface IProps {
     selector?: any;
     resetFn?: any;
     skip?: boolean;
+    onSuccess?: ((data?: any) => void)[];
   };
 }
 export const useFetch = <T,>({
   query,
   thunk,
-  options: { selector, skip = false, resetFn },
+  options: { selector, skip = false, resetFn, onSuccess },
 }: IProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const queryRef = useRef<Query | undefined>(query);
@@ -40,7 +41,20 @@ export const useFetch = <T,>({
   useEffect(() => {
     if (!reduxData) return;
     setData(reduxData);
-    resetFn && dispatch(resetFn());
+    if (onSuccess && onSuccess.length > 0) {
+      onSuccess.forEach(callback => {
+        try {
+          callback(reduxData);
+        } catch (err) {
+          console.error('Error in onSuccess callback:', err);
+        }
+      });
+    }
+
+    // Reset slice nếu có resetFn
+    if (resetFn) {
+      dispatch(resetFn());
+    }
   }, [reduxData]);
 
   useEffect(() => {
@@ -54,7 +68,7 @@ export const useFetch = <T,>({
 
   // Auto dispatch on mount or query change
   useEffect(() => {
-    if (!skip && query !== undefined) {
+    if (!skip) {
       dispatch(thunk(query));
     }
   }, [dispatch, thunk, JSON.stringify(query), skip]);

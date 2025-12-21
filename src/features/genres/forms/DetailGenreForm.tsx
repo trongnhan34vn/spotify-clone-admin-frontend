@@ -13,18 +13,22 @@ import { GenreStatus, type Genre } from '../../../types/entities/genre.type';
 import { capitalizeFirst } from '../../../types/utils/string.format';
 
 interface IProps {
+  ref?: any;
   detail: Genre;
   closeModal: () => void;
   addChanges?: (change: string) => void;
   changes?: string[];
-  handleEdit?: (data: Genre) => void;
+  onEdit?: (data: Genre) => void;
+  resetChanges?: () => void;
 }
 const DetailGenreForm = ({
+  ref,
   detail,
   closeModal,
   addChanges,
   changes = [],
-  handleEdit,
+  onEdit,
+  resetChanges,
 }: IProps) => {
   const resignDetail = useMemo(() => {
     return detail
@@ -68,7 +72,10 @@ const DetailGenreForm = ({
       'createdAt',
     ];
 
-    const fields = Object.entries(detail)
+    const EXCLUDE_FIELDS = ['updatedBy', 'id'];
+
+    let fields = Object.entries(detail)
+      .filter(([key]) => !EXCLUDE_FIELDS.includes(key))
       .sort(([keyA], [keyB]) => {
         const indexA = ORDER.indexOf(keyA);
         const indexB = ORDER.indexOf(keyB);
@@ -83,16 +90,9 @@ const DetailGenreForm = ({
         value: value,
       }));
 
-    const unableEditFields = [
-      'id',
-      'code',
-      'name',
-      'createdBy',
-      'createdAt',
-      'updatedBy',
-    ];
+    const unableEditFields = ['code', 'name', 'createdBy', 'createdAt'];
 
-    const nonRequireFields: string[] = ['updatedBy'];
+    const nonRequireFields: string[] = [];
 
     const fieldComponents = fields.map((f, index) => {
       if (f.key == 'status' || f.key == 'image') return;
@@ -181,6 +181,14 @@ const DetailGenreForm = ({
     return fieldComponents;
   }, [detail, changes]);
 
+  const handleEdit = (data: any) => {
+    resetChanges?.();
+    onEdit?.({
+      ...data,
+      status: data.status ? GenreStatus.ACTIVE : GenreStatus.INACTIVE,
+    });
+  };
+
   return (
     <div className="px-6">
       {/* image */}
@@ -194,9 +202,10 @@ const DetailGenreForm = ({
       {/* title */}
 
       <Form
+        ref={ref}
         className="w-full"
         defaultValues={resignDetail}
-        onSubmit={data => handleEdit?.(data)}
+        onSubmit={handleEdit}
       >
         <div className="flex justify-between w-full items-center gap-5 mb-5">
           <div className="!flex-1">

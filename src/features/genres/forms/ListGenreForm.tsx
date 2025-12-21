@@ -1,11 +1,11 @@
 import type { ColumnDef } from '@tanstack/react-table';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import toast from 'react-hot-toast';
+import { FaCheck, FaXmark } from 'react-icons/fa6';
 import { useNavigate } from 'react-router-dom';
 import Badge from '../../../components/Badge';
 import DeleteModal from '../../../components/DeleteModal';
-import Spinner, { spinner } from '../../../components/Spinner';
-import Table from '../../../components/Table';
+import { spinner } from '../../../components/Spinner';
 import { useFetch } from '../../../hooks/useFetch';
 import { useHandle } from '../../../hooks/useHandle';
 import { useModal } from '../../../hooks/useModal';
@@ -14,12 +14,14 @@ import {
   detailGenreSelector,
   listGenreFilterOptionsSelector,
   listGenreSelector,
+  updateGenreSelector,
 } from '../../../redux/selector/selector';
 import {
   resetDelete,
   resetDetail,
   resetList,
   resetListFilterOption,
+  resetUpdate,
 } from '../../../redux/slices/genre.slice';
 import { RouteName } from '../../../routes/route.name.enum';
 import { getRoutePathByName } from '../../../routes/routes';
@@ -28,6 +30,7 @@ import {
   detailGenreThunk,
   listGenreFilterOptionsThunk,
   listGenreThunk,
+  updateGenreThunk,
 } from '../../../thunks/genre.thunk';
 import {
   GenreStatus,
@@ -38,6 +41,7 @@ import type { Pagination } from '../../../types/entities/pagination.type';
 import type { Query } from '../../../types/entities/query.type';
 import { capitalizeFirst } from '../../../types/utils/string.format';
 import DetailGenreModal from '../modal/DetailGenreModal';
+import AppTable from '../../../components/table';
 
 const ListGenreForm = () => {
   const [query, setQuery] = useState<Query>({
@@ -47,11 +51,26 @@ const ListGenreForm = () => {
     sortType: 'desc',
   });
   const navigate = useNavigate();
+  const [initFilterState, setInitFilterState] =
+    useState<GenreFilterOption | null>();
+
+  const { data: filterOptions, setData: setFilterOption } =
+    useFetch<GenreFilterOption>({
+      thunk: listGenreFilterOptionsThunk,
+      options: {
+        selector: listGenreFilterOptionsSelector,
+        resetFn: resetListFilterOption,
+        onSuccess: [
+          data => setInitFilterState(data),
+          data => setQuery(pre => ({ ...pre, filter: data})),
+        ],
+      },
+    });
+
   const {
     data: pagination,
-    error: listError,
     loading: listLoading,
-    refetch: refetchList
+    refetch: refetchList,
   } = useFetch<Pagination<Genre>>({
     query,
     thunk: listGenreThunk,
@@ -61,25 +80,13 @@ const ListGenreForm = () => {
     },
   });
 
-  const {
-    data: filterOptions,
-    error,
-    loading,
-  } = useFetch<GenreFilterOption>({
-    thunk: listGenreFilterOptionsThunk,
-    options: {
-      selector: listGenreFilterOptionsSelector,
-      resetFn: resetListFilterOption,
-    },
-  });
-
   useEffect(() => {
-    if (loading) {
+    if (listLoading) {
       spinner.show();
     } else {
       spinner.hide();
     }
-  }, [loading]);
+  }, [listLoading]);
 
   const defGenreColumns = useMemo<ColumnDef<Genre>[]>(() => {
     const columns: ColumnDef<Genre>[] = [
@@ -127,6 +134,13 @@ const ListGenreForm = () => {
           const status = value.row.original.status;
           return (
             <Badge
+              icon={
+                status.toLowerCase() == GenreStatus.ACTIVE.toLowerCase() ? (
+                  <FaCheck />
+                ) : (
+                  <FaXmark />
+                )
+              }
               label={capitalizeFirst(status.toLowerCase())}
               color={
                 status.toLowerCase() == GenreStatus.ACTIVE.toLowerCase()
@@ -185,7 +199,7 @@ const ListGenreForm = () => {
     isOpen: isDeleteModalOpen,
   } = useModal();
 
-  const [deleteGenre, setDeleteGenre] = useState<Genre>()
+  const [deleteGenre, setDeleteGenre] = useState<Genre>();
 
   const {
     execute: deleteExecute,
@@ -201,23 +215,22 @@ const ListGenreForm = () => {
   });
 
   const handleOpenDeleteModal = (data: Genre) => {
-    setDeleteGenre(data)
+    setDeleteGenre(data);
     openDeleteModal();
-  }
+  };
 
   const handleDeleteGenre = (id: string) => {
     deleteExecute(id);
-  }
+  };
 
   useEffect(() => {
     if (deleteLoading) {
-      spinner.show()
+      spinner.show();
       return;
     }
 
-    spinner.hide()
-
-  }, [deleteLoading])
+    spinner.hide();
+  }, [deleteLoading]);
 
   useEffect(() => {
     if (deleteError) {
@@ -226,17 +239,91 @@ const ListGenreForm = () => {
     }
 
     if (deleteData) {
-      toast.success("Genre deleted");
-      closeDeleteModal()
+      toast.success('Genre deleted');
+      closeDeleteModal();
       refetchList();
       return;
     }
+  }, [deleteError, deleteData, refetchList]);
 
-  }, [deleteError, deleteData, refetchList])
+  const {
+    loading: editLoading,
+    error: editError,
+    data: editData,
+    execute,
+  } = useHandle({
+    thunk: updateGenreThunk,
+    options: {
+      selector: updateGenreSelector,
+      resetFn: resetUpdate,
+    },
+  });
+
+  const handleEdit = useCallback((data: Genre) => {
+    execute(data);
+  }, []);
+
+  useEffect(() => {
+    if (editLoading) {
+      spinner.show();
+    } else {
+      spinner.hide();
+    }
+  }, [editLoading]);
+
+  useEffect(() => {
+    if (editError) {
+      toast.error(editError);
+      return;
+    }
+
+    if (editData) {
+      toast.success('Genre updated.');
+      refetchList?.();
+      detailExecute?.(detailGenre?.id);
+      return;
+    }
+  }, [editError, editData, editLoading]);
+
+  const handleSearchFilterOption = (query: Record<string, string>) => {
+    if (!initFilterState) {
+      setFilterOption(undefined);
+      return;
+    }
+
+    setFilterOption(() => {
+      const newFilter: GenreFilterOption = { ...initFilterState };
+
+      Object.entries(query).forEach(([key, value]) => {
+        const field = key as keyof GenreFilterOption;
+
+        const initialValues = initFilterState[field] ?? [];
+
+        if (!value) {
+          newFilter[field] = [...initialValues];
+        } else {
+          newFilter[field] = initialValues.filter(item =>
+            item.toLowerCase().includes(value.toLowerCase())
+          );
+        }
+      });
+
+      return newFilter;
+    });
+  };
+
+  const handleSelectPage = (p: number) => {
+    setQuery(prev => ({ ...prev, page: p }));
+  };
+
+  const handleSelectedFilter = (field: string, data: any) => {
+    const newFilter = { ...query.filter, [field]: data[field] || [] };
+    setQuery(pre => ({ ...pre, filter: newFilter }));
+  };
 
   return (
     <div>
-      <Table
+      <AppTable
         data={pagination?.content ?? []}
         columns={defGenreColumns}
         pagination={pagination}
@@ -244,12 +331,17 @@ const ListGenreForm = () => {
         onRowDetail={onRowDetail}
         onRowDelete={handleOpenDeleteModal}
         filterOption={filterOptions}
+        onSelectPage={handleSelectPage}
+        onSearchFilter={handleSearchFilterOption}
+        onSelectFilter={handleSelectedFilter}
+        selectedFilter={query.filter}
       />
 
       <DetailGenreModal
         detail={detailGenre as Genre}
         open={isOpenDetailModal}
         close={closeDetailModal}
+        onEdit={handleEdit}
       />
 
       <DeleteModal<Genre>
@@ -260,7 +352,6 @@ const ListGenreForm = () => {
         onDelete={handleDeleteGenre}
         type={'genre'}
       />
-      <Spinner />
     </div>
   );
 };

@@ -1,91 +1,90 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import SideModal from '../../../components/SideModal';
+import { useModal } from '../../../hooks/useModal';
+import AlertSaveModal from '../../../modals/AlertSaveModal';
 import { type Genre } from '../../../types/entities/genre.type';
 import DetailGenreForm from '../forms/DetailGenreForm';
-import { useHandle } from '../../../hooks/useHandle';
-import { updateGenreThunk } from '../../../thunks/genre.thunk';
-import { updateGenreSelector } from '../../../redux/selector/selector';
-import { resetUpdate } from '../../../redux/slices/genre.slice';
-import Spinner, { spinner } from '../../../components/Spinner';
-import toast from 'react-hot-toast';
 
 interface IProps {
   detail: Genre;
   open: boolean;
   close: () => void;
+  onEdit?: (data: Genre) => void;
 }
-const DetailGenreModal = ({ detail, open, close }: IProps) => {
+const DetailGenreModal = ({ detail, open, close, onEdit }: IProps) => {
+  const plugAlertModal = useModal();
+
   const [changes, setChanges] = useState<string[]>([]);
 
-  const addChanges = useCallback((change: string) => {
-    setChanges(prev => {
-      const isExistChange = prev.includes(change);
-      if (!isExistChange) {
-        return [...prev, change];
-      }
-      return [...prev];
-    });
-  }, []);
-
-  const resetChanges = useCallback(() => {
-    setChanges([]);
-  }, []);
-
-  const handleCloseModal = useCallback(() => {
-    resetChanges();
-    close();
-  }, []);
-
-  const {
-    loading: editLoading,
-    error: editError,
-    data: editData,
-    execute,
-  } = useHandle({
-    thunk: updateGenreThunk,
-    options: {
-      selector: updateGenreSelector,
-      resetFn: resetUpdate,
+  const checkIsExistField = useCallback(
+    (field: string) => {
+      const isExistField = changes.includes(field);
+      if (isExistField) return true;
+      return false;
     },
-  });
+    [changes]
+  );
 
-  const handleEdit = useCallback((data: Genre) => {
-    console.log(data);
-    resetChanges();
-    execute(data);
-  }, []);
+  const handleAddChanges = useCallback(
+    (field: string) => {
+      const isExistField = checkIsExistField(field);
+      if (!isExistField) {
+        setChanges(prev => [...prev, field]);
+      }
+    },
+    [changes]
+  );
 
-  useEffect(() => {
-    if (editLoading) {
-      spinner.show()
+  const handleResetChanges = () => {
+    setChanges([]);
+  };
+
+  const handleCloseSideModal = () => {
+    if (changes.length > 0) {
+      plugAlertModal.open();
     } else {
-      spinner.hide()
+      handleResetChanges();
+      close();
     }
-  }, [editLoading])
+  };
 
-  useEffect(() => {
-    if (editError) {
-      toast.error(editError)
-      return;
-    }
+  const formRef = useRef<HTMLFormElement | null>(null);
 
-    if (editData) {
-      toast.success("Genre updated.")
-      return;
-    }
-  }, [editError, editData])
+  const handleSave = () => {
+    setChanges([]);
+    plugAlertModal.close();
+    formRef?.current?.requestSubmit?.();
+  };
+
+  const handleAbort = useCallback(() => {
+    handleResetChanges();
+    close()
+  }, []);
 
   return (
-    <SideModal title="Genre Detail" open={open} closeModal={close}>
-      <Spinner />
-      <DetailGenreForm
-        detail={detail}
-        closeModal={handleCloseModal}
-        addChanges={addChanges}
-        changes={changes}
-        handleEdit={handleEdit}
+    <div>
+      <SideModal
+        title="Genre Detail"
+        open={open}
+        closeModal={handleCloseSideModal}
+      >
+        <DetailGenreForm
+          detail={detail}
+          closeModal={handleCloseSideModal}
+          onEdit={onEdit}
+          changes={changes}
+          addChanges={handleAddChanges}
+          ref={formRef}
+          resetChanges={handleResetChanges}
+        />
+      </SideModal>
+      <AlertSaveModal
+        open={plugAlertModal.isOpen}
+        closeModal={plugAlertModal.close}
+        onSave={handleSave}
+        onAbort={handleAbort}
       />
-    </SideModal>
+    </div>
   );
 };
 

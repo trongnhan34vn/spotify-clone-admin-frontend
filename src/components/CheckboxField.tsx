@@ -1,4 +1,4 @@
-import React from 'react';
+import { type ReactNode } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import CheckboxInput from './CheckboxInput';
 
@@ -7,7 +7,7 @@ type IProps = {
   value?: string;
   defaultChecked?: boolean;
   checked?: boolean;
-  label: string;
+  label: string | ReactNode;
 };
 const CheckboxField = ({
   name,
@@ -31,22 +31,20 @@ const CheckboxField = ({
     }
   };
   return (
-
-      <Controller
-        control={control}
-        name={name}
-        render={() => (
-          <CheckboxInput
-            onChange={handleToggle}
-            value={value}
-            defaultChecked={defaultChecked}
-            checked={isChecked}
-            label={label}
-            name={name}
-          />
-        )}
-      />
-
+    <Controller
+      control={control}
+      name={name}
+      render={() => (
+        <CheckboxInput
+          onChange={handleToggle}
+          value={value}
+          defaultChecked={defaultChecked}
+          checked={isChecked}
+          label={label}
+          name={name}
+        />
+      )}
+    />
   );
 };
 

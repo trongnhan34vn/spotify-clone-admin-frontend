@@ -36,7 +36,7 @@ export const deleteGenreService = async (id: string) => {
 };
 
 export const updateGenreService = async (data: Genre) => {
-  const response = await http().put('/api/v1/business/genres/update', data);
+  const response = await http().put('/api/v1/business/genres/edit', data);
   return response.data;
 };
 

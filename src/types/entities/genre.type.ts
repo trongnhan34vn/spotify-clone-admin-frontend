@@ -12,8 +12,8 @@ export type Genre = {
 };
 
 export enum GenreStatus {
-  ACTIVE = 'active',
-  INACTIVE = 'inactive',
+  ACTIVE = 'ACTIVE',
+  INACTIVE = 'INACTIVE',
 }
 
 export type CreateGenre = Pick<Genre, 'name'>;
