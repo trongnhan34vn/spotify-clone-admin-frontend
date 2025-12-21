@@ -79,10 +79,11 @@ const Dropdown = ({
           {button}
         </MenuButton>
         <MenuItems
+          
           {...(isStatic ? { static: true } : {})}
           transition
           anchor={anchor ?? 'bottom end'}
-          className={`${itemsClassName} w-52 z-50 origin-top-right rounded border border-white/5 bg-[var(--color-bg-card)] p-1 text-sm/6 text-white transition duration-100 ease-out focus:outline-none data-closed:scale-95 data-closed:opacity-0`}
+          className={`${itemsClassName} w-52 z-50 overflow-hidden origin-top-right rounded border border-white/5 bg-[var(--color-bg-card)] text-sm/6 text-white transition duration-100 ease-out focus:outline-none data-closed:scale-95 data-closed:opacity-0`}
         >
           {children}
         </MenuItems>

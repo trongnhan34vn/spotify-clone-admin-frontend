@@ -1,6 +1,5 @@
-import React from 'react';
-import Modal from './Modal';
 import Button from '../components/Button';
+import Modal from './Modal';
 
 type IProps = {
   open: boolean;

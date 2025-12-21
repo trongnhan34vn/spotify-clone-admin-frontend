@@ -43,13 +43,14 @@ const DetailAdminModal = ({
   );
 
   const handleResetChanges = () => {
-    setChanges([])
-  }
+    setChanges([]);
+  };
 
   const handleCloseSideModal = () => {
     if (changes.length > 0) {
       plugAlertModal.open();
     } else {
+      handleResetChanges();
       close();
     }
   };
@@ -61,6 +62,16 @@ const DetailAdminModal = ({
     plugAlertModal.close();
     formRef?.current?.requestSubmit?.();
   };
+
+  const handleCloseAlertModal = useCallback(() => {
+    // handleResetChanges();
+    plugAlertModal.close();
+  }, []);
+
+  const handleAbort = useCallback(() => {
+        handleResetChanges();
+        plugAlertModal.close();
+  }, [])
 
   return (
     <div>
@@ -82,10 +93,10 @@ const DetailAdminModal = ({
         />
       </SideModal>
       <AlertModal
-        onSave={handleSave}
         open={plugAlertModal.isOpen}
-        closeModal={plugAlertModal.close}
-        onAbort={close}
+        closeModal={handleCloseAlertModal}
+        onSave={handleSave}
+        onAbort={handleAbort}
       />
     </div>
   );

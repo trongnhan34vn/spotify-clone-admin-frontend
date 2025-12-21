@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch } from '../redux/store';
 import type { Query } from '../types/entities/query.type';
@@ -10,20 +10,26 @@ interface IProps {
     selector?: any;
     resetFn?: any;
     skip?: boolean;
+    onSuccess?: ((data?: any) => void)[];
   };
 }
 export const useFetch = <T,>({
   query,
   thunk,
-  options: { selector, skip = false, resetFn },
+  options: { selector, skip = false, resetFn, onSuccess },
 }: IProps) => {
   const dispatch = useDispatch<AppDispatch>();
+  const queryRef = useRef<Query | undefined>(query);
 
   const [data, setData] = useState<T>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const reduxState = useSelector(selector as any) as any;
+
+  useEffect(() => {
+    queryRef.current = query;
+  }, [query]);
 
   const {
     data: reduxData,
@@ -35,7 +41,20 @@ export const useFetch = <T,>({
   useEffect(() => {
     if (!reduxData) return;
     setData(reduxData);
-    resetFn && dispatch(resetFn());
+    if (onSuccess && onSuccess.length > 0) {
+      onSuccess.forEach(callback => {
+        try {
+          callback(reduxData);
+        } catch (err) {
+          console.error('Error in onSuccess callback:', err);
+        }
+      });
+    }
+
+    // Reset slice nếu có resetFn
+    if (resetFn) {
+      dispatch(resetFn());
+    }
   }, [reduxData]);
 
   useEffect(() => {
@@ -48,7 +67,6 @@ export const useFetch = <T,>({
   }, [reduxError]);
 
   // Auto dispatch on mount or query change
-
   useEffect(() => {
     if (!skip) {
       dispatch(thunk(query));

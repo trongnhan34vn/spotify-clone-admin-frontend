@@ -19,8 +19,8 @@ type IProps = {
   adminGroups?: Group[];
   changes?: string[];
   addChanges?: (change: string) => void;
-  formRef?: any
-  resetChanges?: () => void
+  formRef?: any;
+  resetChanges?: () => void;
 };
 const DetailAdminForm = ({
   defaultValue,
@@ -30,7 +30,7 @@ const DetailAdminForm = ({
   changes = [],
   addChanges,
   formRef,
-  resetChanges
+  resetChanges,
 }: IProps) => {
   const adminGroupOptions = useMemo(() => {
     return adminGroups.map(ag => ({
@@ -62,7 +62,14 @@ const DetailAdminForm = ({
       key: key,
       value: value,
     }));
-    const unableEditFields = ['username', 'email', 'id', 'createdAt', 'status', 'code'];
+    const unableEditFields = [
+      'username',
+      'email',
+      'id',
+      'createdAt',
+      'status',
+      'code',
+    ];
     const noneRequireFields = ['birthDay', 'phone', 'address'];
     const fieldComponents = fields.map((f, index) => {
       if (f.key == 'status') return;
@@ -171,7 +178,7 @@ const DetailAdminForm = ({
         </div>
         <div className="px-4">{generateField()}</div>
         <div className="sticky  bottom-0 bg-[var(--color-secondary-background)] p-4 items-center w-full flex gap-4 justify-end">
-          { changes.length > 0 && (
+          {changes.length > 0 && (
             <Button
               type="submit"
               className="!w-fit !mt-2 !rounded !p-2 hover:!scale-100 "
@@ -188,7 +195,9 @@ const DetailAdminForm = ({
           )}
 
           <Button
-            onClick={() => onCloseModal()}
+            onClick={() => {
+              onCloseModal();
+            }}
             className="!w-fit !mt-2 !bg-transparent text-white hover:!text-red-500 !rounded !p-2 hover:!scale-100 "
             label={
               <div className="flex items-center gap-2">

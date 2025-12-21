@@ -2,18 +2,18 @@ export type Genre = {
   id: string;
   code: string;
   name: string;
-  createdBy: string;
   description: string;
   status: GenreStatus;
-  updatedBy: string;
   color: string;
   image: string;
   createdAt: string;
+  updatedBy: string;
+  createdBy: string;
 };
 
 export enum GenreStatus {
-  ACTIVE = 'active',
-  INACTIVE = 'inactive',
+  ACTIVE = 'ACTIVE',
+  INACTIVE = 'INACTIVE',
 }
 
 export type CreateGenre = Pick<Genre, 'name'>;

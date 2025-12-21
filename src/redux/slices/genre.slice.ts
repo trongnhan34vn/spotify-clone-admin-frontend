@@ -55,6 +55,9 @@ const genreSlice = createSlice({
     resetListFilterOption: state => {
       state.listFilterOption = defaultState;
     },
+    resetDelete: state => {
+      state.delete = defaultState;
+    },
   },
 
   extraReducers(builder) {
@@ -135,4 +138,5 @@ export const {
   resetList,
   resetListFilterOption,
   resetUpdate,
+  resetDelete
 } = genreSlice.actions;

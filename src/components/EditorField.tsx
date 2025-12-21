@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { type ReactNode } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import TiptapEditor from './TiptapEditor';
 import { capitalizeFirst } from '../types/utils/string.format';
 
 interface IProps {
   name: string;
-  label: string;
+  label: string | ReactNode;
   id: string;
   containerClassName?: string;
   className?: string;
@@ -24,7 +24,7 @@ const EditorField = ({
   const { control } = useFormContext();
   return (
     <div className={`${containerClassName} mb-4`}>
-      <label className="mb-2 block font-bold">{label}</label>
+      {label && <label className="mb-2 block font-bold">{label}</label>}
       <Controller
         control={control}
         name={name}

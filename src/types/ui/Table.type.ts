@@ -14,5 +14,5 @@ export type TableProps<TData, TValue> = {
   filterOption?: any
   onSearchFilter?: (query: Record<string, string>) => void;
   selectedFilter?: any 
-  createBtnTitle?: string
+  addTitle?: string
 };
